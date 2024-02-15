@@ -1,0 +1,19 @@
+.task {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #101728;
+  color: #a4a4a4;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  min-height: 60px;
+  font-size: 10px;
+  box-shadow: 5px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  font-size: 15px;
+  margin-bottom: 5px;
+}

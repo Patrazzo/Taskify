@@ -1,0 +1,1 @@
+The "assets" folder is used to store a files like photos, logos etc.

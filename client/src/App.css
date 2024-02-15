@@ -1,0 +1,34 @@
+.taskify-lightBlue {
+  background-color: #17223b;
+}
+
+.taskify-Green {
+  background-color: #32ba7c;
+}
+
+.taskify-DarkBlue {
+  background-color: #101728;
+}
+
+.taskify-lightBlue-text {
+  color: #17223b;
+}
+
+.taskify-Green-text {
+  color: #32ba7c;
+}
+
+.taskify-White-text {
+  color: #ffffff;
+}
+.taskify-DarkBlue-text {
+  color: #101728;
+}
+
+.h-75vh {
+  height: 75vh;
+}
+
+.f-2xs{
+  font-size: 5px;
+}

@@ -1,0 +1,29 @@
+.todoColumn {
+    width: 300px;
+    background: linear-gradient(#8a1f1f, #8a0303);
+    padding: 0px;
+    border-radius: 20px;
+    margin: 30px;
+    margin-top: 0;
+    overflow-y: hidden;
+    min-height: 500px;
+    z-index: 3;
+  }
+  
+  .name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #17223B !important;
+    color: #a4a4a4;
+    height: 60px;
+    border-radius: 15px 15px 0 0;
+    font-size: 20px;
+  }
+  
+  .tasks {
+    max-height: 440px; 
+    overflow-y: auto;
+  }
+  
+  
