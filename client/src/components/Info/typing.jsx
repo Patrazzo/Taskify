@@ -9,7 +9,7 @@ export const TypedWords = (props) => {
     deleteSpeed: 20,
   });
   return (
-    <div className="w-full h-48 taskify-DarkBlue flex flex-col justify-center items-center taskify-Green-text text-5xl">
+    <div className="w-full h-48 dark:bg-taskify-DarkBlue flex flex-col justify-center items-center taskify-Green-text text-5xl taskify-lightBackground ">
       <div>
         <span>{text}</span>
         <Cursor cursorStyle="|" />

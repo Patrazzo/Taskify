@@ -29,6 +29,18 @@
   height: 75vh;
 }
 
-.f-2xs{
+.f-2xs {
   font-size: 5px;
+}
+
+.taskify-lightBackground {
+  background-color: #fffff2;
+}
+
+.taskify-lightElement {
+  background-color: #f7f7f2;
+}
+
+* {
+  @apply transition-colors duration-200;
 }
