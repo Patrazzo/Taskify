@@ -61,19 +61,25 @@ export const Footer = () => {
           </button>
         </div>
         <div className="flex flex-row gap-4">
-          <img
-            src="assets/facebookLogo.png"
-            alt="Image 1"
-            width={35}
-            height={35}
-          />
-          <img src="assets/xLogo.png" alt="Image 2" width={35} height={35} />
-          <img
-            src="assets/instagramLogo.png"
-            alt="Image 3"
-            width={35}
-            height={35}
-          />
+          <a href="https://facebook.com">
+            <img
+              src="assets/facebookLogo.png"
+              alt="Image 1"
+              width={35}
+              height={35}
+            />
+          </a>
+          <a href="https://x.com">
+            <img src="assets/xLogo.png" alt="Image 2" width={35} height={35} />
+          </a>
+          <a href="https://instagram.com">
+            <img
+              src="assets/instagramLogo.png"
+              alt="Image 3"
+              width={35}
+              height={35}
+            />
+          </a>
         </div>
       </div>
       <div className="text-xs text-center dark:text-taskify-lightBackground taskify-DarkBlue-text">

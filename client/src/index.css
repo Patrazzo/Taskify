@@ -9,7 +9,7 @@ body {
 }
 @font-face {
   font-family: "Taskify";
-  src: url(/assets/Logo.ttf);
+  src: url(/assets/Taskify.ttf);
 }
 
 ::-webkit-scrollbar {
