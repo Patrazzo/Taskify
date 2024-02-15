@@ -2,21 +2,17 @@ import React, { useState, useEffect } from "react";
 import "../CSS/navbar.css";
 
 export const Footer = () => {
-  // Retrieve the theme from localStorage if available, otherwise default to "light"
   const savedTheme = localStorage.getItem("theme") || "light";
   const [theme, setTheme] = useState(savedTheme);
 
   useEffect(() => {
-    // Update the HTML class based on the selected theme
     document.documentElement.classList.toggle("dark", theme === "dark");
 
-    // Save the selected theme to localStorage
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   const switchTheme = () => {
-    // Toggle between "light" and "dark" themes
-    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
