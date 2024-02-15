@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: "media",
+  darkMode: "class",
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "node_modules/flowbite-react/lib/esm/**/*.js",
