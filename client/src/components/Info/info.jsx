@@ -5,7 +5,7 @@ export const Info = (props) => {
   const flexColReverse = props.reverse ? "phone:flex-col-reverse" : "phone:flex-col";
   return (
     <div
-      className={`flex ${flexRowReverse} ${flexColReverse} phone:flex-col justify-between h-75vh phone:h-auto phone:pb-10 phone:items-center dark:bg-taskify-DarkBlue taskify-lightBackground`}
+      className={`flex ${flexRowReverse} ${flexColReverse} phone:flex-col justify-between h-60vh phone:h-auto phone:pb-10 phone:items-center dark:bg-taskify-DarkBlue taskify-lightBackground`}
     >
       <div className="w-2/4 phone:w-full flex taskify-White-text justify-center items-center">
         <img src={props.imgSrc} alt="image" className="logo" />

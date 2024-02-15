@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../CSS/navbar.css";
-import { useState, useEffect } from "react";
+
 export const Footer = () => {
-  const [theme, setTheme] = useState("light");
+  // Retrieve the theme from localStorage if available, otherwise default to "light"
+  const savedTheme = localStorage.getItem("theme") || "light";
+  const [theme, setTheme] = useState(savedTheme);
+
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    // Update the HTML class based on the selected theme
+    document.documentElement.classList.toggle("dark", theme === "dark");
+
+    // Save the selected theme to localStorage
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const switchTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-    console.log(theme);
+    // Toggle between "light" and "dark" themes
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
+
   return (
     <div className="flex flex-col justify-center items-center w-full phone:gap-10 h-auto px-20 pt-7 pb-2 dark:bg-taskify-lightBlue taskify-lightElement">
       <div className="w-full pb-28 phone:pb-0 flex flex-row phone:flex-col gap-10 items-center justify-between">
