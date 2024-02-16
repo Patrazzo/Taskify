@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { Dashboard } from "./components/Dashboard/dashboard";
 import Home from "./pages/Home/home";
+import { RegisterPage } from "./pages/Register/register.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </Router>
     </>

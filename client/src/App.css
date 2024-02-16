@@ -29,6 +29,10 @@
   height: 60vh;
 }
 
+.h-90vh {
+  height: 90vh;
+}
+
 .f-2xs {
   font-size: 5px;
 }

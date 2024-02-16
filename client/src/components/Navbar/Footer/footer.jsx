@@ -16,11 +16,16 @@ export const Footer = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full phone:gap-10 h-auto px-20 pt-7 pb-2 dark:bg-taskify-lightBlue taskify-lightElement">
-      <div className="w-full pb-28 phone:pb-0 flex flex-row phone:flex-col gap-10 items-center justify-between">
+    <div className="flex flex-col justify-center items-center w-full phone:gap-10 h-auto px-20 pt-5 pb-2 dark:bg-taskify-lightBlue taskify-lightElement">
+      <div className="w-full pb-10 phone:pb-0 flex flex-row phone:flex-col gap-10 items-center justify-between">
         <div className="flex flex-row items-center justify-center">
-          <img src="assets/logo.svg" alt="Logo" width={75} className="mr-3" />
-          <h1 className="text-4xl text-taskify-lightBlue dark:text-taskify-lightBackground">
+          <img
+            src="assets/logo.svg"
+            alt="Logo"
+            width={75}
+            className="mr-3 smallphone:w-10"
+          />
+          <h1 className="text-4xl smallphone:text-3xl text-taskify-lightBlue dark:text-taskify-lightBackground">
             Taskify
           </h1>
           <button

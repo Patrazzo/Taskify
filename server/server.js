@@ -10,6 +10,7 @@ app.listen(port, () => {
   console.log(`Сървърът е пуснат на порт: ${port}`);
 });
 
+
 // Add new list
 app.post("/lists", async (req, res) => {
   const { listName } = req.body;
