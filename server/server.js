@@ -1,35 +1,70 @@
+// Import necessary modules
 const express = require("express");
 const cors = require("cors");
 const pool = require("./database.js");
-const port = 2608;
-const app = express();
 
+// Create Express app
+const app = express();
+const port = 2608;
+
+// Museriddleware
 app.use(express.json());
 app.use(cors());
+
+// Start the server
 app.listen(port, () => {
-  console.log(`Сървърът е пуснат на порт: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });
 
-
-// Add new list
-app.post("/lists", async (req, res) => {
-  const { listName } = req.body;
-  const insertSTMT = `INSERT INTO Lists (UserID, ListName)
-                      VALUES (1, '${listName}');`;
+// Handle user login
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
 
   try {
-    await pool.query(insertSTMT);
-    res.status(201).send("List added successfully");
-  } catch (err) {
-    console.error("Error adding list:", err);
-    res.status(500).send("Internal Server Error");
+    // Check if the username and password match a user in the database
+    const userQuery = `
+      SELECT userid FROM Users 
+      WHERE username = $1 AND password = $2
+    `;
+    const { rows } = await pool.query(userQuery, [username, password]);
+
+    // If user exists and password matches, send the user userid in response
+    if (rows.length === 1) {
+      res.status(200).json({ userid: rows[0].userid });
+    } else {
+      res.status(404).json({ error: "User not found or incorrect password" });
+    }
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Handle user registration
+app.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Insert user into the database
+    const insertUserQuery = `
+      INSERT INTO Users (username, password, role)
+      VALUES ($1, $2, $3)
+    `;
+    await pool.query(insertUserQuery, [username, password, 'user']);
+    
+    // Send success response
+    res.status(201).json({ message: "User added successfully" });
+  } catch (error) {
+    // Handle errors
+    console.error("Error adding user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 // Add new task
 app.post("/tasks", async (req, res) => {
   const { taskName, taskDescription } = req.body;
-  const insertSTMT = `INSERT INTO Tasks (ListID, TaskName, Description, Status)
+  const insertSTMT = `INSERT INTO Tasks (Listid, TaskName, Description, Status)
                       VALUES (1, '${taskName}', '${taskDescription}', 'todo');`;
   try {
     await pool.query(insertSTMT);
