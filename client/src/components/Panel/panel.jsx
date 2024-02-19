@@ -11,10 +11,10 @@ export const Panel = () => {
   return (
     
     <div>
-      <div className="p-4 sm:ml-64 ">
-        <div className="p-4 mt-14 flex flex-col items-center ">
+      <div className="p-4 sm:ml-64 bg-taskify-lightBackground dark:bg-taskify-DarkBlue ">
+        <div className="p-4 m-3 flex flex-col items-center ">
           <Button setButtonPopup={setButtonPopup}/>
-          <div className="flex flex-row ">
+          <div className="flex flex-row phone:flex-col">
             <TodoColumn></TodoColumn>
             <InProgressColumn></InProgressColumn>
             <DoneColumn></DoneColumn>

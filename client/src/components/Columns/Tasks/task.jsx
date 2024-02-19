@@ -1,13 +1,12 @@
 import React from "react";
-import "./CSS/task.css";
 
 export const Task = ({ title, description }) => {
   return (
     <>
-      <div className="task">
+      <div className="flex flex-row justify-between items-center bg-taskify-lightElement text-taskify-lightBlue dark:bg-taskify-lightBlue dark:text-taskify-lightDarkElement m-2 p-3 rounded-2xl min-h-16 shadow">
         <div className="taskData">
-          <h1 className="title">{title}</h1>
-          <p>{description}</p>
+          <h1 className="text-sm mb-1">{title}</h1>
+          <p className="text-xs">{description}</p>
         </div>
         <div className="taskSettings">
           <svg

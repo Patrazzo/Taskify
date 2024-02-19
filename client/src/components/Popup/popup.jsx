@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./CSS/popup.css";
 
 function Popup(props) {
   const [name, setName] = useState("");
@@ -43,7 +42,7 @@ function Popup(props) {
 
   return props.trigger ? (
     <div className="fixed top-0 left-0 w-full h-full bg-opacity-25 main-color-blur flex justify-center items-center z-50 backdrop-blur">
-      <div className="secondary-color rounded-xl w-96 h-96 p-6 z-60 flex flex-col items-center shadow-lg">
+      <div className="bg-taskify-lightDarkElement dark:bg-taskify-lightBlue rounded-xl w-96 h-96 p-6 z-60 flex flex-col items-center shadow-lg">
         <button
           className="w-full cursor-pointer h-6 text-base z-70 flex items-center justify-end"
           onClick={() => props.setTrigger(false)}
@@ -79,7 +78,7 @@ function Popup(props) {
         <div className="flex items-center justify-center flex-col">
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <input
-              className="mt-6 rounded-lg w-72 resize-none main-color text-white !important custom"
+              className="mt-6 rounded-lg w-72 resize-none bg-taskify-lightBackground dark:bg-taskify-DarkBlue text-white border-spacing-0"
               type="text"
               id="name"
               name="name"
@@ -89,7 +88,7 @@ function Popup(props) {
               required
             />
             <textarea
-              className="mt-6 rounded-lg resize-none main-color text-white !important custom"
+              className="mt-6 rounded-lg resize-none main-color bg-taskify-lightBackground dark:bg-taskify-DarkBlue text-white !important custom"
               id="message"
               name="message"
               value={message}
@@ -99,7 +98,7 @@ function Popup(props) {
             ></textarea>
             <button
               type="submit"
-              className="main-color hover text-white py-2 px-4 rounded-lg cursor-pointer text-base m-6 transition duration-1000"
+              className="main-color dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green dark:hover:text-taskify-DarkBlue bg-taskify-lightBackground hover:bg-taskify-Green text-taskify-DarkBlue hover:text-taskify-lightElement dark:text-white py-2 px-4 rounded-lg cursor-pointer text-base m-6 transition duration-1000"
             >
               Създай
             </button>

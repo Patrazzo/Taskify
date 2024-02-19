@@ -1,11 +1,15 @@
 import React from "react";
-import "./CSS/button.css";
 
 export const Button = ({ setButtonPopup }) => {
-{ /*const handleClick = () => {}; */ }
+  {
+    /*const handleClick = () => {}; */
+  }
 
   return (
-    <button className="flex justify-center items-center text-gray-400 text-m rounded-full cursor-pointer select-none custom-settings" onClick={() => setButtonPopup(true)}>
+    <button
+      className="flex justify-center items-center dark:text-taskify-lightElement text-taskify-DarkBlue text-m rounded-3xl cursor-pointer select-none bg-taskify-lightDarkElement dark:bg-taskify-lightBlue m-0 mb-7 w-[200px] h-12"
+      onClick={() => setButtonPopup(true)}
+    >
       <h1>ADD NEW TASK</h1>
     </button>
   );

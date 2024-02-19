@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Navigate } from "react-router-dom"; // Import Navigate
 import axios from "axios";
 
 const Form = ({ type }) => {
@@ -8,21 +8,35 @@ const Form = ({ type }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false); // Track login status
+
+  useEffect(() => {
+    console.log("Logged in:", loggedIn); // Log login status after state update
+  }, [loggedIn]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
     if (isLogin) {
-      axios.post("http://localhost:2608/login", { username, password })
-        .then(res => {
+      axios
+        .post("http://localhost:2608/login", { username, password })
+        .then((res) => {
           console.log(res.data); // Assuming the response contains user ID
           setUserId(res.data.id); // Set the user ID in state
+          setUsername(""); // Clear username field
+          setPassword(""); // Clear password field
+          setLoggedIn(true); // Set login status to true
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     } else {
-      axios.post("http://localhost:2608/register", { username, password })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+      axios
+        .post("http://localhost:2608/register", { username, password })
+        .then((res) => {
+          console.log(res);
+          setUsername(""); // Clear username field
+          setPassword(""); // Clear password field
+        })
+        .catch((err) => console.log(err));
     }
   }
 
@@ -37,12 +51,14 @@ const Form = ({ type }) => {
             type="text"
             className="w-64 smallphone:w-52 h-5 m-3 rounded-lg bg-taskify-lightBackground dark:bg-taskify-DarkBlue shadow-lg text-taskify-Green p-5 border-0 text-lg font-semibold placeholder-gray-400"
             placeholder="Потребител"
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <input
             type="password"
             className="w-64 smallphone:w-52 h-5 m-3 rounded-lg bg-taskify-lightBackground shadow-lg border-0 dark:bg-taskify-DarkBlue border-spacing-0 outline-none text-taskify-Green p-5 text-lg font-semibold placeholder-gray-400"
             placeholder="Парола"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           {isLogin ? (
@@ -62,6 +78,7 @@ const Form = ({ type }) => {
           />
         </form>
       </div>
+      {loggedIn && <Navigate to="/dashboard" />} {/* Redirect if logged in */}
       {isLogin && userId && <p>Потребител с ID: {userId}</p>}
     </div>
   );

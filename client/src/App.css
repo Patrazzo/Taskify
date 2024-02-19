@@ -48,3 +48,7 @@
 * {
   @apply transition-colors duration-200;
 }
+
+.shadow {
+  box-shadow: 5px 3px 10px rgba(0, 0, 0, 0.3);
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import Form from "../../components/Login/form";
+import Form from "../../components/Login/form.jsx";
 import Header from "../../components/Navbar/Header/header";
 import { Footer } from "../../components/Navbar/Footer/footer";
 const LoginPage = () => {

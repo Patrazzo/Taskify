@@ -7,7 +7,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Dashboard } from "./components/Dashboard/dashboard";
+import { Dashboard } from "./pages/Dashboard/dashboard.jsx";
 import Home from "./pages/Home/home";
 import { RegisterPage } from "./pages/Register/register.jsx";
 
