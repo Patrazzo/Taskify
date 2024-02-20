@@ -20,7 +20,7 @@ export const InProgressColumn = () => {
 
   const handleDrop = (event) => {
     event.preventDefault();
-    const column = "inprogress"; // Name of the column
+    const column = "inprogress";
     const taskId = event.dataTransfer.getData("text/plain"); // Get the dragged task ID
     updateTaskStatus(taskId, column);
     console.log("Task dropped into In Progress column");
@@ -35,7 +35,7 @@ export const InProgressColumn = () => {
         },
         body: JSON.stringify({ status: column }),
       });
-      // Refresh tasks after updating
+      
       const updatedTasks = tasks.map((task) =>
         task.taskid === taskId ? { ...task, status: column } : task
       );

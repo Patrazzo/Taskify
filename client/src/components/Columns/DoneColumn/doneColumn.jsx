@@ -20,10 +20,9 @@ export const DoneColumn = () => {
 
   const handleDrop = (event) => {
     event.preventDefault();
-    const column = "done"; // Name of the column
+    const column = "done"; 
     const taskId = event.dataTransfer.getData("text/plain"); // Get the dragged task ID
     updateTaskStatus(taskId, column);
-    console.log("Task dropped into Done column");
   };
 
   const updateTaskStatus = async (taskId, column) => {

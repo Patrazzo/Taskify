@@ -80,8 +80,8 @@ app.put("/tasks/:taskId/status", async (req, res) => {
   const { status } = req.body;
 
   try {
-    const updateSTMT = `UPDATE Tasks SET Status = $1 WHERE Taskid = $2`;
-    await pool.query(updateSTMT, [status, taskId]);
+    const updateSTMT = `UPDATE Tasks SET Status = '${status}' WHERE Taskid = ${taskId}`;
+    await pool.query(updateSTMT);
     res.status(200).send("Task status updated successfully");
   } catch (err) {
     console.error("Error updating task status:", err);

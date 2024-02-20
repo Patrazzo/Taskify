@@ -1,14 +1,13 @@
-// Task.jsx
 import React from "react";
 
 export const Task = ({ id, title, description }) => {
   const handleDragStart = (event) => {
-    event.dataTransfer.setData("text/plain", id); // Set the ID of the task being dragged
-    event.target.style.opacity = "0.5"; // Set opacity while dragging
+    event.dataTransfer.setData("text/plain", id);
+    event.target.style.opacity = "0.9";
   };
 
   const handleDragEnd = (event) => {
-    event.target.style.opacity = "1"; // Reset opacity after dragging
+    event.target.style.opacity = "1";
   };
 
   return (

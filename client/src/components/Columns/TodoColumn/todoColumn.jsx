@@ -1,4 +1,3 @@
-// TodoColumn.jsx
 import React, { useState, useEffect } from "react";
 import { Task } from "../Tasks/task";
 
@@ -15,15 +14,14 @@ export const TodoColumn = () => {
   }, [tasks]);
 
   const handleDragOver = (event) => {
-    event.preventDefault(); // Necessary to allow dropping
+    event.preventDefault();
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
-    const column = "todo"; // Name of the column
-    const taskId = event.dataTransfer.getData("text/plain"); // Get the dragged task ID
+    const column = "todo"; 
+    const taskId = event.dataTransfer.getData("text/plain");
     updateTaskStatus(taskId, column);
-    console.log("Task dropped into Todo column");
   };
 
   const updateTaskStatus = async (taskId, column) => {
