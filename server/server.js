@@ -50,8 +50,8 @@ app.post("/register", async (req, res) => {
       INSERT INTO Users (username, password, role)
       VALUES ($1, $2, $3)
     `;
-    await pool.query(insertUserQuery, [username, password, 'user']);
-    
+    await pool.query(insertUserQuery, [username, password, "user"]);
+
     // Send success response
     res.status(201).json({ message: "User added successfully" });
   } catch (error) {
@@ -71,6 +71,20 @@ app.post("/tasks", async (req, res) => {
     res.status(201).send("Task added successfully");
   } catch (err) {
     console.error("Error adding task:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.put("/tasks/:taskId/status", async (req, res) => {
+  const taskId = req.params.taskId;
+  const { status } = req.body;
+
+  try {
+    const updateSTMT = `UPDATE Tasks SET Status = $1 WHERE Taskid = $2`;
+    await pool.query(updateSTMT, [status, taskId]);
+    res.status(200).send("Task status updated successfully");
+  } catch (err) {
+    console.error("Error updating task status:", err);
     res.status(500).send("Internal Server Error");
   }
 });
