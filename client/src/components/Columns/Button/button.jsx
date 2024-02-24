@@ -1,9 +1,6 @@
 import React from "react";
 
 export const Button = ({ setButtonPopup }) => {
-  {
-    /*const handleClick = () => {}; */
-  }
 
   return (
     <button

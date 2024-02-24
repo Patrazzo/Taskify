@@ -35,7 +35,7 @@ export const InProgressColumn = () => {
         },
         body: JSON.stringify({ status: column }),
       });
-      
+
       const updatedTasks = tasks.map((task) =>
         task.taskid === taskId ? { ...task, status: column } : task
       );
@@ -45,6 +45,24 @@ export const InProgressColumn = () => {
     }
   };
 
+  const handleTaskUpdate = async (taskId, updatedTitle, updatedDescription) => {
+    try {
+      await fetch(`http://localhost:2608/tasks/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: updatedTitle,
+          description: updatedDescription,
+        }),
+      });
+      // Optionally, you can refresh the tasks after updating
+      // Fetch tasks again or update the existing task list
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
   return (
     <div
       className="w-[300px] p-0 rounded-3xl m-8 dashboard:m-2 mt-0 overflow-y-hidden min-h-[500px] z-30 dark:bg-[#068D9D] bg-[#3AB6C8] select-none"
@@ -63,6 +81,7 @@ export const InProgressColumn = () => {
               id={task.taskid}
               title={task.taskname}
               description={task.description}
+              onUpdate={handleTaskUpdate} // Pass the onUpdate function
             />
           ))}
       </div>

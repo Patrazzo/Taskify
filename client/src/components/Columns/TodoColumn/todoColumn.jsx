@@ -19,7 +19,7 @@ export const TodoColumn = () => {
 
   const handleDrop = (event) => {
     event.preventDefault();
-    const column = "todo"; 
+    const column = "todo";
     const taskId = event.dataTransfer.getData("text/plain");
     updateTaskStatus(taskId, column);
   };
@@ -42,6 +42,24 @@ export const TodoColumn = () => {
       console.error("Error updating task status:", error);
     }
   };
+  const handleTaskUpdate = async (taskId, updatedTitle, updatedDescription) => {
+    try {
+      await fetch(`http://localhost:2608/tasks/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: updatedTitle,
+          description: updatedDescription,
+        }),
+      });
+      // Optionally, you can refresh the tasks after updating
+      // Fetch tasks again or update the existing task list
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
 
   return (
     <div
@@ -61,6 +79,7 @@ export const TodoColumn = () => {
               id={task.taskid}
               title={task.taskname}
               description={task.description}
+              onUpdate={handleTaskUpdate} // Pass the onUpdate function
             />
           ))}
       </div>

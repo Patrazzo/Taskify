@@ -11,6 +11,7 @@ export default {
       phone: { max: "850px" },
       smallphone: { max: "400px" },
       dashboard: { max: "1050px" },
+      sidebar: {max: "1450px"},
     },
     colors: {
       "taskify-lightBlue": "#17223b",
