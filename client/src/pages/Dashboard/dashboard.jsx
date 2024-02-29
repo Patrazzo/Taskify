@@ -1,19 +1,17 @@
 import React from "react";
 import Header from "../../components/Navbar/Header/header";
+import { Panel } from "../../components/Panel/panel";
 import { Footer } from "../../components/Navbar/Footer/footer";
-import { Panel } from "../../components/Panel/panel.jsx";
-import { TestSidebar } from "../../components/Navbar/Sidebar/testSidebar.jsx";
+import { Sidebar } from "../../components/Navbar/Sidebar/sidebar";
 export const Dashboard = () => {
   return (
-    <div className="flex">
-      <div className="flex flex-col flex-1">
-        <Header />
-        <div className="flex flex-row justify-between items-center h-auto min-h-screen">
-          <TestSidebar />
-          <Panel></Panel>
-        </div>
-        <Footer></Footer>
+    <div className="">
+      <Header />
+      <div className="flex flex-row justify-center h-auto min-h-screen phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
+        <Sidebar />
+        <Panel />
       </div>
+      <Footer></Footer>
     </div>
   );
 };
