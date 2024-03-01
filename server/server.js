@@ -62,12 +62,14 @@ app.post("/register", async (req, res) => {
 });
 
 // Add new task
+// Add new task
 app.post("/tasks", async (req, res) => {
-  const { taskName, taskDescription } = req.body;
+  const { listId, taskName, taskDescription } = req.body;
+  
   const insertSTMT = `INSERT INTO Tasks (Listid, TaskName, Description, Status)
-                      VALUES (1, '${taskName}', '${taskDescription}', 'todo');`;
+                      VALUES ($1, $2, $3, 'todo');`;
   try {
-    await pool.query(insertSTMT);
+    await pool.query(insertSTMT, [listId, taskName, taskDescription]);
     res.status(201).send("Task added successfully");
   } catch (err) {
     console.error("Error adding task:", err);
@@ -122,8 +124,9 @@ app.post("/lists", async (req, res) => {
 // Retrieve tasks
 app.get("/tasks", async (req, res) => {
   try {
-    const STMT = `SELECT * FROM Tasks`;
-    const result = await pool.query(STMT);
+    const listId = req.query.listId; // Extract listId from query parameters
+    const STMT = `SELECT * FROM Tasks WHERE listid = $1`; // Use parameterized query to avoid SQL injection
+    const result = await pool.query(STMT, [listId]);
     const tasksArray = result.rows;
     res.status(200).json(tasksArray);
   } catch (err) {
@@ -152,9 +155,9 @@ app.delete("/tasks/:taskId", async (req, res) => {
 
   try {
     // Delete the task from the database
-    const deleteSTMT = 'DELETE FROM Tasks WHERE Taskid = $1';
+    const deleteSTMT = "DELETE FROM Tasks WHERE Taskid = $1";
     await pool.query(deleteSTMT, [taskId]);
-    
+
     res.status(200).send("Task deleted successfully");
   } catch (error) {
     console.error("Error deleting task:", error);

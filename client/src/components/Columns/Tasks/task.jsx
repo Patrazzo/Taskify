@@ -28,42 +28,76 @@ export const Task = ({ id, title, description, onUpdate }) => {
   return (
     <div>
       <div
-        draggable="true"
+        draggable={`${isPopupOpen ? "false" : "true"}`}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        onClick={handleClick}
-        className="flex flex-row justify-between items-center bg-taskify-lightElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightDarkElement m-2 p-3 rounded-2xl h-14 shadow cursor-pointer" // Added cursor-pointer to show it's clickable
+        className={`flex flex-col justify-center items-center bg-taskify-lightElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightDarkElement m-2 p-3 ${
+          isPopupOpen ? "h-60" : "h-14"
+        } rounded-2xl shadow cursor-pointer transition-all duration-200 overflow-y-hidden`}
       >
-        <div className="taskData">
-          <h1 className="text-md mb-1">{title}</h1>
-          <p className="text-xs">{description}</p>
+        <div className="w-full flex flex-row justify-between">
+          <div className="taskData">
+            <h1 className="text-md mb-1">{title}</h1>
+            <p className="text-xs">{description}</p>
+          </div>
+          <div className="flex justify-center items-center">
+            {isPopupOpen ? (
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 46 47"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={handleClosePopup}
+              >
+                <rect
+                  x="40.3222"
+                  y="-1"
+                  width="10"
+                  height="60"
+                  rx="5"
+                  transform="rotate(44.8594 40.3222 -2)"
+                  fill="white"
+                />
+                <rect
+                  x="47.0588"
+                  y="42.225"
+                  width="10"
+                  height="60"
+                  rx="5"
+                  transform="rotate(137.269 47.0588 42.073)"
+                  fill="white"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6 stroke-gray-500 transition-colors duration-100 hover:stroke-taskify-lightElement"
+                onClick={handleClick}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
+                />
+              </svg>
+            )}
+          </div>
         </div>
-        <div className="taskSettings">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
-            />
-          </svg>
-        </div>
+        {isPopupOpen && (
+          <Popup
+            id={id}
+            title={title}
+            description={description}
+            onClose={handleClosePopup}
+            onUpdate={handleUpdate}
+          />
+        )}
       </div>
-      {isPopupOpen && (
-        <Popup
-          id={id}
-          title={title}
-          description={description}
-          onClose={handleClosePopup}
-          onUpdate={handleUpdate}
-        />
-      )}
     </div>
   );
 };
@@ -110,21 +144,35 @@ const Popup = ({ id, title, description, onClose, onUpdate }) => {
   };
 
   return (
-    <div className="popup-container">
-      <div className="popup-content">
-        <h2>Update Task</h2>
+    <div className="flex flex-col mt-5 justify-center items-center">
+      <div className="flex flex-col justify-center items-center">
         <input
           type="text"
           value={updatedTitle}
           onChange={(e) => setUpdatedTitle(e.target.value)}
+          maxLength={20}
+          className="w-full rounded-lg dark:bg-taskify-DarkBlue "
         />
         <textarea
           value={updatedDescription}
           onChange={(e) => setUpdatedDescription(e.target.value)}
+          maxLength={45}
+          className="w-full mt-1 rounded-lg dark:bg-taskify-DarkBlue resize-none"
         />
-        <button onClick={handleUpdate}>Update</button>
-        <button onClick={handleDelete}>Delete</button>
-        <button onClick={onClose}>Close</button>
+        <div className="flex flex-row w-full justify-between">
+          <button
+            className="flex justify-center items-center w-20 h-8 p-4 m-3 dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green rounded-full dark:hover:text-taskify-lightBlue"
+            onClick={handleUpdate}
+          >
+            Update
+          </button>
+          <button
+            className="flex justify-center items-center w-20 h-8 p-4 m-3 dark:bg-taskify-DarkBlue dark:hover:bg-red-600 rounded-full dark:hover:text-taskify-lightBlue"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   );

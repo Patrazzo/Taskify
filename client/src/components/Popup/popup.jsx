@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function Popup(props) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  let selectedList = localStorage.getItem("selectedListId");
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -21,7 +22,11 @@ function Popup(props) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ taskName: name, taskDescription: message }),
+        body: JSON.stringify({
+          listId: selectedList,
+          taskName: name,
+          taskDescription: message,
+        }), // Pass listId here
       });
 
       if (response.ok) {

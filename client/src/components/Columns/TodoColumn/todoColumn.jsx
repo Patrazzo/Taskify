@@ -3,9 +3,10 @@ import { Task } from "../Tasks/task";
 
 export const TodoColumn = () => {
   const [tasks, setTasks] = useState([]);
-
+  let selectedList = localStorage.getItem("selectedListId");
+  
   useEffect(() => {
-    fetch("http://localhost:2608/tasks")
+    fetch(`http://localhost:2608/tasks?listId=${selectedList}`)
       .then((res) => res.json())
       .then((data) => {
         setTasks(data);

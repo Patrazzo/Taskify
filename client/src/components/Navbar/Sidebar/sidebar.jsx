@@ -48,6 +48,11 @@ export const Sidebar = () => {
       document.body.classList.remove("overflow-hidden");
     }
   }, [open]);
+  
+  const handleListClick = (listId) => {
+    setOpen(false)
+    localStorage.setItem("selectedListId", listId);
+  };
 
   return (
     <>
@@ -59,7 +64,7 @@ export const Sidebar = () => {
         stroke={
           localStorage.getItem("theme") === "dark" ? "#f7f7f2" : "#17223b"
         }
-        className={`absolute cursor-pointer h-7 w-7 z-50 ${
+        className={`absolute cursor-pointer h-7 w-7 z-30 ${
           open
             ? "left-72 transition-all duration-300"
             : "left-0 transition-all duration-300"
@@ -75,14 +80,15 @@ export const Sidebar = () => {
       </svg>
 
       <div
-        className={`fixed top-0 left-0 w-full h-full dark:bg-taskify-lightBlue bg-taskify-lightElement z-40 transition-opacity duration-300 ${
+        className={`fixed top-0 left-0 w-full h-full dark:bg-taskify-lightBlue bg-taskify-lightElement z-20 transition-opacity duration-300 ${
           open ? "opacity-50" : "opacity-0 pointer-events-none"
         }`}
+        onClick={() => setOpen(!open)}
       />
       <div
         className={`fixed top-0 ${
           open ? "left-0" : "-left-full"
-        } w-72 h-full dark:bg-taskify-lightBlue bg-taskify-lightElement z-50 transition-all duration-300 overflow-y-auto`}
+        } w-72 h-full dark:bg-taskify-lightBlue bg-taskify-lightElement z-30 transition-all duration-300 overflow-y-auto`}
       >
         <Link
           to="/home"
@@ -114,7 +120,12 @@ export const Sidebar = () => {
             </div>
           </li>
           {lists.map((list) => (
-            <ListTab key={list.listid} listName={list.listname} />
+            <ListTab
+              key={list.listid}
+              listId={list.listid}
+              listName={list.listname}
+              onClick={handleListClick}
+            />
           ))}
         </ul>
       </div>
