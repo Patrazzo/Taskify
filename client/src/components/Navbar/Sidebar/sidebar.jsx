@@ -41,6 +41,7 @@ export const Sidebar = () => {
     }
   };
 
+
   useEffect(() => {
     if (open) {
       document.body.classList.add("overflow-hidden");
@@ -48,9 +49,8 @@ export const Sidebar = () => {
       document.body.classList.remove("overflow-hidden");
     }
   }, [open]);
-  
+
   const handleListClick = (listId) => {
-    setOpen(false)
     localStorage.setItem("selectedListId", listId);
   };
 

@@ -121,6 +121,21 @@ app.post("/lists", async (req, res) => {
   }
 });
 
+app.put("/lists/:listId", async (req, res) => {
+  const listId = req.params.listId;
+  const { listName } = req.body;
+
+  try {
+    const updateSTMT =
+      "UPDATE Lists SET ListName = $1 WHERE ListId = $2";
+    await pool.query(updateSTMT, [listName, listId]);
+    res.status(200).send("List name updated successfully");
+  } catch (err) {
+    console.error("Error updating list name:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // Retrieve tasks
 app.get("/tasks", async (req, res) => {
   try {
