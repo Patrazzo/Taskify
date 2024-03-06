@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-function Popup(props) {
+function Popup({ trigger, setTrigger }) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   let selectedList = localStorage.getItem("selectedListId");
+  const popupRef = useRef(null);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -42,22 +43,37 @@ function Popup(props) {
     setName("");
     setMessage("");
 
-    props.setTrigger(false); // Close the popup after submission
+    setTrigger(false); // Close the popup after submission
   };
 
-  return props.trigger ? (
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setTrigger(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setTrigger]);
+
+  return trigger ? (
     <div className="fixed top-0 left-0 w-full h-full bg-opacity-25 main-color-blur flex justify-center items-center z-50 backdrop-blur">
-      <div className="bg-taskify-lightDarkElement dark:bg-taskify-lightBlue rounded-xl w-96 h-96 p-6 z-60 flex flex-col items-center shadow-lg">
-        <button
-          className="w-full cursor-pointer h-6 text-base z-70 flex items-center justify-end"
-          onClick={() => props.setTrigger(false)}
-        >
+      <div
+        ref={popupRef}
+        className="bg-taskify-lightDarkElement dark:bg-taskify-lightBlue rounded-xl w-96 h-96 p-6 z-60 flex flex-col items-center shadow-lg transition duration-300 transform"
+      >
+        <div className="w-full h-6 text-base z-70 flex items-center justify-end">
           <svg
             width="15"
             height="15"
             viewBox="0 0 46 47"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className="cursor-pointer"
+            onClick={() => setTrigger(false)}
           >
             <rect
               x="40.3222"
@@ -78,7 +94,7 @@ function Popup(props) {
               fill="white"
             />
           </svg>
-        </button>
+        </div>
 
         <div className="flex items-center justify-center flex-col">
           <form className="flex flex-col" onSubmit={handleSubmit}>
@@ -109,7 +125,7 @@ function Popup(props) {
             </button>
           </form>
         </div>
-        {props.children}
+
       </div>
     </div>
   ) : (
