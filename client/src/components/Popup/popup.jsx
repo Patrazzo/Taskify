@@ -58,12 +58,14 @@ function Popup({ trigger, setTrigger }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setTrigger]);
+  
 
   return trigger ? (
-    <div className="fixed top-0 left-0 w-full h-full bg-opacity-25 main-color-blur flex justify-center items-center z-50 backdrop-blur">
+    <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+      <div className="fixed top-0 left-0 w-full h-full opacity-50 dark:bg-taskify-lightBlue bg-taskify-lightElement z-30 animate-fade-in-background " />
       <div
         ref={popupRef}
-        className="bg-taskify-lightDarkElement dark:bg-taskify-lightBlue rounded-xl w-96 h-96 p-6 z-60 flex flex-col items-center shadow-lg transition duration-300 transform"
+        className="bg-taskify-lightDarkElement dark:bg-taskify-lightBlue rounded-xl w-96 h-96 p-6 z-30 flex flex-col items-center shadow-lg transition duration-300 animate-fade-in-out"
       >
         <div className="w-full h-6 text-base z-70 flex items-center justify-end">
           <svg
@@ -125,8 +127,39 @@ function Popup({ trigger, setTrigger }) {
             </button>
           </form>
         </div>
-
       </div>
+
+      
+      <style jsx>{`
+        @keyframes fade-in-out {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in-out {
+          animation: fade-in-out 0.3s ease-in-out;
+        }
+
+        @keyframes animate-fade-in-background {
+          from {
+            opacity: 0;
+            
+          }
+          to {
+            opacity: 0.5;
+            
+          }
+        }
+        .animate-fade-in-background {
+          animation: animate-fade-in-background 0.3s ease-in-out;
+        }
+      `}</style>
     </div>
   ) : (
     ""
