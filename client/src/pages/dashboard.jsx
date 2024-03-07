@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Header from "../../components/Navbar/Header/header";
-import { Panel } from "../../components/Panel/panel";
-import { Footer } from "../../components/Navbar/Footer/footer";
-import { Sidebar } from "../../components/Navbar/Sidebar/sidebar";
+import Header from "../components/Navbar/Header/header";
+import { Panel } from "../components/Panel/panel";
+import { Footer } from "../components/Navbar/Footer/footer";
+import { Sidebar } from "../components/Navbar/Sidebar/sidebar";
 
 export const Dashboard = () => {
   const [buttonPopup, setButtonPopup] = useState(false); // State management in Dashboard

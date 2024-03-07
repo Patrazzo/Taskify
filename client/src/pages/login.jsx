@@ -1,7 +1,7 @@
 import React from "react";
-import Form from "../../components/Login/form.jsx";
-import Header from "../../components/Navbar/Header/header";
-import { Footer } from "../../components/Navbar/Footer/footer";
+import Form from "../components/Login/form.jsx";
+import Header from "../components/Navbar/Header/header.jsx";
+import { Footer } from "../components/Navbar/Footer/footer.jsx";
 const LoginPage = () => {
   return (
     <>

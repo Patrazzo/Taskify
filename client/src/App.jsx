@@ -1,15 +1,16 @@
 import "./App.css";
 import React from "react";
-import LoginPage from "./pages/Login/login.jsx";
+import LoginPage from "./pages/login.jsx";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { Dashboard } from "./pages/Dashboard/dashboard.jsx";
-import Home from "./pages/Home/home";
-import { RegisterPage } from "./pages/Register/register.jsx";
+import { Dashboard } from "./pages/dashboard.jsx";
+import Home from "./pages/home.jsx";
+import { RegisterPage } from "./pages/register.jsx";
+import NotFoundPage from "./pages/NotFound.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
     </>
