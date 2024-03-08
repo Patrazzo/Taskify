@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "../components/Navbar/Header/header.jsx";
+import Header from "../components/Navbar/header.jsx";
 import { Info } from "../components/Info/info.jsx";
 import { Welcome } from "../components/Info/welcome.jsx";
 import { TypedWords } from "../components/Info/typing.jsx";
-import { Footer } from "../components/Navbar/Footer/footer.jsx";
+import { Footer } from "../components/Navbar/footer.jsx";
 
 const Home = () => {
   return (

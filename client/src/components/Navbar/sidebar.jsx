@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ListTab } from "../../List/listTab";
+import { ListTab } from "../List/listTab";
 import { Link } from "react-router-dom";
 
 export const Sidebar = () => {

@@ -58,8 +58,6 @@ function Popup({ trigger, setTrigger }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setTrigger]);
-  
-
   return trigger ? (
     <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
       <div className="fixed top-0 left-0 w-full h-full opacity-50 dark:bg-taskify-lightBlue bg-taskify-lightElement z-30 animate-fade-in-background " />
@@ -149,11 +147,9 @@ function Popup({ trigger, setTrigger }) {
         @keyframes animate-fade-in-background {
           from {
             opacity: 0;
-            
           }
           to {
             opacity: 0.5;
-            
           }
         }
         .animate-fade-in-background {

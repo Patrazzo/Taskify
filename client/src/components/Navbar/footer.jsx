@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "../CSS/navbar.css";
 
 export const Footer = () => {
   const savedTheme = localStorage.getItem("theme") || "dark";
