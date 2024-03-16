@@ -11,7 +11,7 @@ export default {
       phone: { max: "850px" },
       smallphone: { max: "400px" },
       dashboard: { max: "1050px" },
-      sidebar: {max: "1450px"},
+      sidebar: { max: "1450px" },
     },
     colors: {
       "taskify-lightBlue": "#17223b",
@@ -21,6 +21,7 @@ export default {
       "taskify-lightElement": "#f7f7f2",
       "taskify-lightDarkElement": "#e0e1dd",
       "taskify-textLightDarkColor": "#1e6091",
+      "taskify-lightGreenBackground": "#0f9690",
     },
   },
   plugins: [require("flowbite/plugin")],

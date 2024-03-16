@@ -8,7 +8,7 @@ import Popup from "../Popup/popup";
 export const TaskifyPanel = ({ buttonPopup, setButtonPopup }) => {
   return (
     <div className="p-4 m-3 flex flex-col items-center justify-center z-0">
-      <Button setButtonPopup={setButtonPopup} />
+      <Button setButtonPopup={setButtonPopup} name={"ДОБАВИ ЗАДАЧА"} />
       <div className="flex flex-row phone:flex-col">
         <TodoColumn></TodoColumn>
         <InProgressColumn></InProgressColumn>
