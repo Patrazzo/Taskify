@@ -34,6 +34,7 @@ const NotFoundPage = () => {
               redirect={true}
               pathToLocation={"/home"}
               name={"НАЧАЛО"}
+              gradient={false}
               color={"[#C1121F]"}
               darkcolor={"[#FF576F]"}
             />

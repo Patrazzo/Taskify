@@ -36,7 +36,7 @@ const verifyUser = (req, res, next) => {
 
 app.get("/logout", (req, res) => {
   // Clear the cookie by setting an expired date in the past
-  res.clearCookie("token", { path: '/' });
+  res.clearCookie('token');
   return res.json({ Status: "Success" });
 });
 
@@ -70,7 +70,8 @@ app.post("/login", (req, res) => {
         req.body.password.toString(),
         result.rows[0].password,
         (err, response) => {
-          if (err) return res.status(500).json({ Error: "Password comparison error" });
+          if (err)
+            return res.status(500).json({ Error: "Password comparison error" });
           if (response) {
             const { username, userid } = result.rows[0];
             const token = jwt.sign({ username, userid }, "secret", {

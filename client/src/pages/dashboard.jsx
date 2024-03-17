@@ -12,9 +12,12 @@ export const Dashboard = () => {
   const [userId, setUserId] = useState("");
 
   const handleLogout = () => {
-    axios.get('http://localhost:2608/logout').then(res => {
-      location.reload(true);
-    }).catch(err => console.log(err))
+    axios
+      .get("http://localhost:2608/logout")
+      .then((res) => {
+        location.reload(true);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
