@@ -1,9 +1,9 @@
 import React from "react";
 export const InfoDiv = ({ direction, color, darkcolor, children }) => {
   const checkDir = () => {
-    if (direction == "start") {
+    if (direction === "start") {
       return "-r";
-    } else if (direction == "end") {
+    } else if (direction === "end") {
       return "-l";
     } else {
       return "";

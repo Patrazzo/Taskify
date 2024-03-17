@@ -60,8 +60,8 @@ const Home = () => {
         />
       </InfoDiv>
       <div className="pt-20 pb-10 px-32 phone:px-3 bg-[#20e3b2] dark:bg-[#06beb6]">
-        <Bar heading={"Продуктивността Ви преди Taskify"} percentage={35} />
-        <Bar heading={"Продуктивността Ви след Taskify"} percentage={95} />
+        <Bar heading={"Продуктивността Ви преди Taskify"} percentage={"80%"} />
+        <Bar heading={"Продуктивността Ви след Taskify"} percentage={"40%"} />
       </div>
       <Fade />
       <Info
