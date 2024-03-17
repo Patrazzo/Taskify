@@ -36,7 +36,6 @@ const NotFoundPage = () => {
               name={"НАЧАЛО"}
               color={"[#C1121F]"}
               darkcolor={"[#FF576F]"}
-              gradient={false}
             />
           </div>
           <div className="dark:bg-taskify-DarkBlue bg-taskify-lightBackground w-1/2 phone:w-full h-full"></div>

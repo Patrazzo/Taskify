@@ -21,7 +21,6 @@ const Header = () => {
           name={"ВЛЕЗ"}
           color={"taskify-Green"}
           darkcolor={"taskify-Green"}
-          
         />
       </div>
     </>
