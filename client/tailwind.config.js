@@ -24,5 +24,6 @@ export default {
       "taskify-lightGreenBackground": "#0f9690",
     },
   },
+  safelist: ["rounded-l-3xl", "rounded-r-3xl"],
   plugins: [require("flowbite/plugin")],
 };

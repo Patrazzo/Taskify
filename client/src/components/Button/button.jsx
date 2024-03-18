@@ -5,12 +5,14 @@ export const Button = ({
   setButtonPopup,
   redirect,
   pathToLocation,
-  name
+  name,
+  passFun,
 }) => {
   if (redirect) {
     return (
       <Link to={pathToLocation}>
         <button
+          onClick={passFun}
           className={`drop-shadow w-40 smallphone:w-32 h-10 rounded-2xl text-base bg-gradient-to-r dark:from-[#8e44ad] dark:via-[#D76D77] dark:to-[#c0392b] from-[#f2709c]  to-[#ff9472] text-taskify-lightElement dark:text-taskify-lightBlue`}
         >
           {name}

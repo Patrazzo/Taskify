@@ -3,14 +3,15 @@ import Header from "../components/Navbar/header.jsx";
 import { TaskifyPanel } from "../components/Panels/taskifyPanel.jsx";
 import { Footer } from "../components/Navbar/footer.jsx";
 import { Sidebar } from "../components/Navbar/sidebar.jsx";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 export const Dashboard = () => {
   const [auth, setAuth] = useState(false);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [userId, setUserId] = useState("");
-
+  const [buttonPopup, setButtonPopup] = useState(false);
+  const nav = useNavigate();
   const handleLogout = () => {
     axios
       .get("http://localhost:2608/logout")
@@ -48,34 +49,20 @@ export const Dashboard = () => {
   return (
     <div>
       {auth ? (
-        <div>
-          <h3>
-            You are authorized - {name} - ID - {userId}
-          </h3>
-          <button onClick={handleLogout}>Logout</button>
+        <div className="">
+          <Header />
+          <div className="flex flex-row justify-center h-auto min-h-screen phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
+            {buttonPopup ? " " : <Sidebar />}
+            <TaskifyPanel
+              buttonPopup={buttonPopup}
+              setButtonPopup={setButtonPopup}
+            />
+          </div>
+          <Footer></Footer>
         </div>
       ) : (
-        <div>
-          <h3>Login</h3>
-          <Link to="/login">Login</Link>
-          {error && <p>{error}</p>}
-        </div>
+        nav("/login")
       )}
     </div>
   );
 };
-
-/* return (
-    <div className="">
-      <Header />
-      <div className="flex flex-row justify-center h-auto min-h-screen phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
-        {buttonPopup ? " " : <Sidebar />}
-        <TaskifyPanel
-          buttonPopup={buttonPopup}
-          setButtonPopup={setButtonPopup}
-        />
-      </div>
-      <Footer></Footer>
-    </div>
-  );
-}; */
