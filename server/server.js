@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:5173"],
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -35,8 +35,8 @@ const verifyUser = (req, res, next) => {
 };
 
 app.get("/logout", (req, res) => {
-  // Clear the cookie by setting an expired date in the past
-  res.clearCookie('token');
+  res.clearCookie("token");
+  res.clearCookie("selectedList");
   return res.json({ Status: "Success" });
 });
 
@@ -75,7 +75,7 @@ app.post("/login", (req, res) => {
           if (response) {
             const { username, userid } = result.rows[0];
             const token = jwt.sign({ username, userid }, "secret", {
-              expiresIn: "1d",
+              expiresIn: "7d",
             });
             res.cookie("token", token);
             return res.json({ Status: "Success" });
@@ -88,6 +88,117 @@ app.post("/login", (req, res) => {
       return res.status(404).json({ Error: "No such user" });
     }
   });
+});
+
+app.post("/createList", (req, res) => {
+  const query = "INSERT INTO lists (userid, listname) VALUES ($1, $2)";
+  const values = [req.body.user, req.body.newListName];
+  pool.query(query, values, (err, result) => {
+    if (err) return res.json({ Error: "Insert data error" });
+    return res.json({ Status: "Success" });
+  });
+});
+app.post("/addTask/", (req, res) => {
+  const query =
+    "INSERT INTO tasks (listid, taskname, description, status) VALUES ($1, $2, $3, 'todo')";
+  const values = [req.body.listId, req.body.newName, req.body.newDescription];
+  pool.query(query, values, (err, result) => {
+    if (err) return res.json({ Error: "Insert Task Error" });
+    return res.json({ Status: "Success" });
+  });
+});
+
+app.get("/getList/:userid", (req, res) => {
+  const userId = req.params.userid;
+  const query = "SELECT * FROM lists WHERE userid = $1";
+  const values = [userId];
+  pool.query(query, values, (err, result) => {
+    if (err) {
+      console.error("Error retrieving lists:", err);
+      return res.status(500).json({ Error: "Internal Server Error" });
+    }
+    if (result.rows.length === 0) {
+      return res.status(404).json({ Error: "No lists found for the user" });
+    }
+
+    return res.status(200).json(result.rows);
+  });
+});
+
+app.get("/getTask/:listid", async (req, res) => {
+  const listId = req.params.listid;
+  try {
+    const query = "SELECT * FROM tasks WHERE listid = $1";
+    const { rows } = await pool.query(query, [listId]);
+
+    // If there are no tasks found for the list, return an empty array
+    if (rows.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    return res.status(200).json(rows);
+  } catch (err) {
+    console.error("Error retrieving Tasks:", err);
+    return res.status(500).json({ Error: "Internal Server Error" });
+  }
+});
+
+app.put("/tasks/:taskId/status", async (req, res) => {
+  const { taskId } = req.params;
+  const { status } = req.body;
+
+  try {
+    const result = await pool.query(
+      "UPDATE tasks SET status = $1 WHERE taskId = $2",
+      [status, taskId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    res.status(200).json({ message: "Task status updated successfully" });
+  } catch (error) {
+    console.error("Error updating task status:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.put("/tasks/:id", async (req, res) => {
+  const taskId = req.params.id;
+  const { title, description } = req.body;
+  try {
+    const result = await pool.query(
+      "UPDATE tasks SET taskname = $1, description = $2 WHERE taskid = $3",
+      [title, description, taskId]
+    );
+    if (rows.length === 0) {
+      res.status(404).json({ error: "Task not found" });
+    } else {
+      res.json(rows[0]);
+    }
+  } catch (error) {
+    console.error("Error updating task:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Delete Task
+app.delete("/tasks/:id", async (req, res) => {
+  const taskId = req.params.id;
+  try {
+    const { rows } = await pool.query("DELETE FROM tasks WHERE taskid = $1", [
+      taskId,
+    ]);
+    if (rows.length === 0) {
+      res.status(404).json({ error: "Task not found" });
+    } else {
+      res.json({ message: "Task deleted successfully" });
+    }
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 app.listen(port, () => {

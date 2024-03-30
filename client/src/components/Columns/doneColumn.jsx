@@ -1,18 +1,23 @@
 // DoneColumn.jsx
 import React, { useState, useEffect } from "react";
 import { Task } from "../Tasks/task";
+import axios from "axios";
 
-export const DoneColumn = () => {
+export const DoneColumn = ({ selectedList }) => {
   const [tasks, setTasks] = useState([]);
-  let selectedList = localStorage.getItem("selectedListId");
 
   useEffect(() => {
-    fetch(`http://localhost:2608/tasks?listId=${selectedList}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTasks(data);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:2608/getTask/${selectedList}`
+        );
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching lists:", error);
+      }
+    };
+    fetchTasks();
   }, [tasks]);
 
   const handleDragOver = (event) => {
@@ -28,18 +33,14 @@ export const DoneColumn = () => {
 
   const updateTaskStatus = async (taskId, column) => {
     try {
-      await fetch(`http://localhost:2608/tasks/${taskId}/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: column }),
+      await axios.put(`http://localhost:2608/tasks/${taskId}/status`, {
+        status: column,
       });
-      // Refresh tasks after updating
-      const updatedTasks = tasks.map((task) =>
-        task.taskid === taskId ? { ...task, status: column } : task
+      setTasks(
+        tasks.map((task) =>
+          task.taskid === taskId ? { ...task, status: column } : task
+        )
       );
-      setTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating task status:", error);
     }

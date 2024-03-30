@@ -5,6 +5,7 @@ import { Footer } from "../components/Navbar/footer.jsx";
 import { Sidebar } from "../components/Navbar/sidebar.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 export const Dashboard = () => {
   const [auth, setAuth] = useState(false);
   const [name, setName] = useState("");
@@ -12,14 +13,9 @@ export const Dashboard = () => {
   const [userId, setUserId] = useState("");
   const [buttonPopup, setButtonPopup] = useState(false);
   const nav = useNavigate();
-  const handleLogout = () => {
-    axios
-      .get("http://localhost:2608/logout")
-      .then((res) => {
-        location.reload(true);
-      })
-      .catch((err) => console.log(err));
-  };
+  const [selectedList, setSelectedList] = useState(
+    Cookies.get("selectedList") || "1"
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,18 +40,22 @@ export const Dashboard = () => {
     };
 
     fetchData();
-  }, []); // Empty dependency array to run effect only once
-
+  }, []);
   return (
     <div>
       {auth ? (
         <div className="">
           <Header />
           <div className="flex flex-row justify-center h-auto min-h-screen phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
-            {buttonPopup ? " " : <Sidebar />}
+            {buttonPopup ? (
+              " "
+            ) : (
+              <Sidebar user={userId} setSelectedList={setSelectedList} />
+            )}
             <TaskifyPanel
               buttonPopup={buttonPopup}
               setButtonPopup={setButtonPopup}
+              selectedList={selectedList}
             />
           </div>
           <Footer></Footer>

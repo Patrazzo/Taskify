@@ -1,48 +1,28 @@
+import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 
-function Popup({ trigger, setTrigger }) {
+function Popup({ trigger, setTrigger, selectedList }) {
   const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
-  let selectedList = localStorage.getItem("selectedListId");
+  const [description, setDescription] = useState("");
   const popupRef = useRef(null);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
 
-  const handleMessageChange = (e) => {
-    setMessage(e.target.value);
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:2608/tasks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          listId: selectedList,
-          taskName: name,
-          taskDescription: message,
-        }), // Pass listId here
-      });
-
-      if (response.ok) {
-        console.log("Data sent successfully");
-      } else {
-        console.error("Failed to send data");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    // Clear the input fields
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    axios.post("http://localhost:2608/addTask", {
+      newName: name,
+      newDescription: description,
+      listId: selectedList,
+    });
     setName("");
-    setMessage("");
-
+    setDescription("");
     setTrigger(false); // Close the popup after submission
   };
 
@@ -112,8 +92,8 @@ function Popup({ trigger, setTrigger }) {
               className="mt-6 rounded-lg resize-none main-color bg-taskify-lightBackground dark:bg-taskify-DarkBlue text-white !important custom"
               id="message"
               name="message"
-              value={message}
-              onChange={handleMessageChange}
+              value={description}
+              onChange={handleDescriptionChange}
               rows="4"
               placeholder="Описание"
             ></textarea>
@@ -127,7 +107,6 @@ function Popup({ trigger, setTrigger }) {
         </div>
       </div>
 
-      
       <style jsx>{`
         @keyframes fade-in-out {
           from {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-export const Task = ({ id, title, description, onUpdate }) => {
+export const Task = ({ id, title, description }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleDragStart = (event) => {
@@ -108,39 +109,27 @@ const Popup = ({ id, title, description, onClose, onUpdate }) => {
 
   const handleUpdate = async () => {
     try {
-      // Make an HTTP request to update the task
-      await fetch(`http://localhost:2608/tasks/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: updatedTitle,
-          description: updatedDescription,
-        }),
+      await axios.put(`http://localhost:2608/tasks/${id}`, {
+        title: updatedTitle,
+        description: updatedDescription,
       });
-
-      // Notify the parent component that the task has been updated
       onUpdate(updatedTitle, updatedDescription);
-      onClose(); // Close the popup after updating
+      
     } catch (error) {
       console.error("Error updating task:", error);
-      // Handle error if needed
     }
+    onClose();
   };
 
   const handleDelete = async () => {
     try {
-      // Make an HTTP request to delete the task
-      await fetch(`http://localhost:2608/tasks/${id}`, {
-        method: "DELETE",
-      });
-
-      onClose(); // Close the popup after deletion
+      await axios.delete(`http://localhost:2608/tasks/${id}`);
+      onDelete(id);
+      
     } catch (error) {
       console.error("Error deleting task:", error);
-      // Handle error if needed
     }
+    onClose();
   };
 
   return (

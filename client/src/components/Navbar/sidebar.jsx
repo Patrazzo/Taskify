@@ -1,46 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { ListTab } from "../List/listTab";
 import { Link } from "react-router-dom";
-
-export const Sidebar = () => {
+import axios from "axios";
+export const Sidebar = ({ user, setSelectedList }) => {
   const [open, setOpen] = useState(false);
   const [lists, setLists] = useState([]);
   const [newListName, setNewListName] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:2608/lists")
-      .then((response) => response.json())
-      .then((data) => {
-        setLists(data);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  }, [lists]);
 
   const handleInputChange = (e) => {
     setNewListName(e.target.value);
   };
 
-  const handleCreateNewList = async () => {
-    try {
-      const response = await fetch("http://localhost:2608/lists", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ listName: newListName }),
-      });
-
-      if (response.ok) {
-        console.log("New list created successfully");
-        setNewListName("");
-      } else {
-        console.error("Failed to create new list");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const handleCreateNewList = async (event) => {
+    event.preventDefault();
+    axios.post("http://localhost:2608/createList", {
+      newListName: newListName,
+      user: user,
+    });
+    setNewListName("");
   };
 
+  useEffect(() => {
+    const fetchLists = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:2608/getList/${user}`
+        );
+        setLists(response.data);
+      } catch (error) {
+        console.error("Error fetching lists:", error);
+      }
+    };
+    fetchLists();
+  }, [lists]);
 
   useEffect(() => {
     if (open) {
@@ -51,7 +43,7 @@ export const Sidebar = () => {
   }, [open]);
 
   const handleListClick = (listId) => {
-    localStorage.setItem("selectedListId", listId);
+    setSelectedList(listId); 
   };
 
   return (
@@ -64,18 +56,17 @@ export const Sidebar = () => {
         stroke={
           localStorage.getItem("theme") === "dark" ? "#f7f7f2" : "#17223b"
         }
-        className={`absolute cursor-pointer h-7 w-7 z-30 ${
+        className={`absolute m-2 cursor-pointer h-7 w-7 z-30 ${
           open
             ? "left-72 transition-all duration-300"
             : "left-0 transition-all duration-300"
-        }
-        ${!open && "rotate-180"}`}
+        }`}
         onClick={() => setOpen(!open)}
       >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M15.75 19.5 8.25 12l7.5-7.5"
+          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
         />
       </svg>
 
