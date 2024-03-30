@@ -29,7 +29,6 @@ export const InProgressColumn = ({ selectedList }) => {
     const column = "inprogress";
     const taskId = event.dataTransfer.getData("text/plain"); // Get the dragged task ID
     updateTaskStatus(taskId, column);
-    console.log("Task dropped into In Progress column");
   };
 
   const updateTaskStatus = async (taskId, column) => {

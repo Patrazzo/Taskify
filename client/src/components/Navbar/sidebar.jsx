@@ -43,7 +43,7 @@ export const Sidebar = ({ user, setSelectedList }) => {
   }, [open]);
 
   const handleListClick = (listId) => {
-    setSelectedList(listId); 
+    setSelectedList(listId);
   };
 
   return (
@@ -104,9 +104,9 @@ export const Sidebar = ({ user, setSelectedList }) => {
               />
               <button
                 onClick={handleCreateNewList}
-                className="dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green hover:bg-taskify-Green dark:hover:text-taskify-lightBlue bg-taskify-lightDarkElement dark:text-white text-taskify-lightBlue px-4 py-2 rounded-lg w-[200px]"
+                className="dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green hover:bg-taskify-Green dark:hover:text-taskify-lightBlue bg-taskify-lightDarkElement dark:text-taskify-lightDarkElement text-taskify-lightBlue px-4 py-2 rounded-lg w-[200px]"
               >
-                Create
+                СЪЗДАЙ
               </button>
             </div>
           </li>

@@ -172,13 +172,32 @@ app.put("/tasks/:id", async (req, res) => {
       "UPDATE tasks SET taskname = $1, description = $2 WHERE taskid = $3",
       [title, description, taskId]
     );
-    if (rows.length === 0) {
+    if (result.rowCount === 0) {
       res.status(404).json({ error: "Task not found" });
     } else {
-      res.json(rows[0]);
+      res.json(result[0]);
     }
   } catch (error) {
     console.error("Error updating task:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put("/lists/:listid", async (req, res) => {
+  const listId = req.params.listid;
+  const newName = req.body.listName;
+  try {
+    const result = await pool.query(
+      "UPDATE lists SET listname = $1 WHERE listid = $2",
+      [newName, listId]
+    );
+    if (result.rowCount === 0) {
+      res.status(404).json({ error: "List not found" });
+    } else {
+      res.json(result[0]);
+    }
+  } catch (error) {
+    console.error("Error updating list:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -187,10 +206,10 @@ app.put("/tasks/:id", async (req, res) => {
 app.delete("/tasks/:id", async (req, res) => {
   const taskId = req.params.id;
   try {
-    const { rows } = await pool.query("DELETE FROM tasks WHERE taskid = $1", [
+    const result = await pool.query("DELETE FROM tasks WHERE taskid = $1", [
       taskId,
     ]);
-    if (rows.length === 0) {
+    if (result.rowCount === 0) {
       res.status(404).json({ error: "Task not found" });
     } else {
       res.json({ message: "Task deleted successfully" });
@@ -200,6 +219,36 @@ app.delete("/tasks/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+app.delete("/lists/:listid", async (req, res) => {
+  const listId = req.params.listid;
+  const client = await pool.connect(); // Acquire a client from the pool
+
+  try {
+    await client.query('BEGIN'); // Start a transaction
+
+    // Delete tasks associated with the list
+    await client.query('DELETE FROM tasks WHERE listid = $1', [listId]);
+
+    // Delete the list
+    const result = await client.query('DELETE FROM lists WHERE listid = $1', [listId]);
+    
+    await client.query('COMMIT'); // Commit the transaction
+
+    if (result.rowCount === 0) {
+      res.status(404).json({ error: "List not found" });
+    } else {
+      res.json({ message: "List and associated tasks deleted successfully" });
+    }
+  } catch (error) {
+    await client.query('ROLLBACK'); // Rollback the transaction in case of error
+    console.error("Error deleting list:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  } finally {
+    client.release(); // Release the client back to the pool
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
