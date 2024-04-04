@@ -38,8 +38,8 @@ export const Task = ({ id, title, description }) => {
       >
         <div className="w-full flex flex-row justify-between">
           <div className="taskData">
-            <h1 className="text-md mb-1">{title}</h1>
-            <p className="text-xs">{description}</p>
+            <h3 className="text-md mb-1 line-clamp-1">{title}</h3>
+            <p className="text-xs line-clamp-1">{description}</p>
           </div>
           <div className="flex justify-center items-center">
             {isPopupOpen ? (
@@ -114,20 +114,16 @@ const Popup = ({ id, title, description, onClose, onUpdate }) => {
         description: updatedDescription,
       });
       onUpdate(updatedTitle, updatedDescription);
-      
     } catch (error) {
       console.error("Error updating task:", error);
     }
     onClose();
   };
 
-  
-
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:2608/tasks/${id}`);
       onDelete(id);
-      
     } catch (error) {
       console.error("Error deleting task:", error);
     }
@@ -141,14 +137,13 @@ const Popup = ({ id, title, description, onClose, onUpdate }) => {
           type="text"
           value={updatedTitle}
           onChange={(e) => setUpdatedTitle(e.target.value)}
-          maxLength={20}
           className="w-full rounded-lg dark:bg-taskify-DarkBlue "
         />
         <textarea
           value={updatedDescription}
           onChange={(e) => setUpdatedDescription(e.target.value)}
           maxLength={45}
-          className="w-full mt-1 rounded-lg dark:bg-taskify-DarkBlue resize-none"
+          className="w-full mt-1 rounded-lg dark:bg-taskify-DarkBlue resize-none "
         />
         <div className="flex flex-row w-full justify-between">
           <button

@@ -34,12 +34,6 @@ const verifyUser = (req, res, next) => {
   }
 };
 
-app.get("/logout", (req, res) => {
-  res.clearCookie("token");
-  res.clearCookie("selectedList");
-  return res.json({ Status: "Success" });
-});
-
 app.get("/validate", verifyUser, (req, res) => {
   return res.json({
     Status: "Success",

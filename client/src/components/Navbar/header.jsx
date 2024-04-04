@@ -8,12 +8,16 @@ const Header = () => {
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [userId, setUserId] = useState("");
+  const [lastVisitedPage, setLastVisitedPage] = useState("/"); // Initialize with default root path
 
   const handleLogout = () => {
-    axios
-      .get("http://localhost:2608/logout")
-      .then(() => location.reload(true))
-      .catch((err) => console.log(err));
+    // Delete cookies
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "selectedList=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+    
+    {auth ? window.location.href = lastVisitedPage : null}
   };
 
   useEffect(() => {
@@ -39,6 +43,11 @@ const Header = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // Save the current page's URL to state whenever the path changes
+    setLastVisitedPage(window.location.pathname);
+  }, [window.location.pathname]);
 
   return (
     <div className="drop-shadow m-0 w-full h-16 flex flex-row justify-between items-center p-8 smallphone:p-2 taskify-lightElement dark:bg-taskify-lightBlue">
