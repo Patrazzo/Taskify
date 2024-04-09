@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const Form = ({ type }) => {
   const isLogin = type === "login";
@@ -10,7 +11,6 @@ const Form = ({ type }) => {
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
-  
   const handleRegister = (event) => {
     event.preventDefault();
     axios
@@ -38,36 +38,52 @@ const Form = ({ type }) => {
       .then((err) => console.log(err));
   };
   return (
-    <div className="flex w-full h-screen phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
-      <div className="flex w-full h-full flex-row phone:flex-col-reverse">
-        <div className="w-1/2 phone:w-full h-full bg-taskify-Green">
-          <h1>IMAGE</h1>
+    <div className="flex w-full h-[95vh] phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
+      <div className={`flex w-full h-full ${isLogin ? "flex-row" : "flex-row-reverse"} phone:flex-col-reverse`}>
+        <div className={`w-1/3 phone:w-full h-full phone:hidden bg-[#20e3b2] flex justify-center items-center flex-col  ${isLogin ? "rounded-tr-2xl rounded-br-3xl" : "rounded-tl-2xl rounded-bl-3xl"} `}>
+          <img src="/assets/todolist.png" alt="Logo" />
         </div>
-        <div className="w-1/2 phone:w-full h-full bg-taskify-lightGreenBackground">
-          <h1 className="m-8 text-taskify-Green font-black text-2xl">
-            {isLogin ? "ВЛИЗАНЕ" : "РЕГИСТРАЦИЯ"}
-          </h1>
+        <div className="w-2/3 phone:w-full h-full phone:h-screen phone:justify-start phone:pt-10 dark:bg-taskify-DarkBlue bg-taskify-lightBackground flex items-center justify-center flex-col">
           <form
-            className="flex flex-col items-center bg-taskify-lightBlue"
+            className="flex flex-col justify-center items-center rounded-2xl w-7/12 h-3/5 smallphone:w-10/12 phone:m-20"
             onSubmit={isLogin ? handleLogin : handleRegister}
           >
+            <h1 className="m-5 text-taskify-Green font-black text-3xl text-center">
+              {isLogin ? "ВЛИЗАНЕ" : "РЕГИСТРАЦИЯ"}
+            </h1>
             <input
+              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 dark:bg-taskify-lightBlue"
               type="text"
-              placeholder="username"
+              placeholder="Потребител"
               name="username"
               onChange={(e) =>
                 setValues({ ...values, username: e.target.value })
               }
             />
             <input
+              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 dark:bg-taskify-lightBlue"
               type="password"
-              placeholder="password"
+              placeholder="Парола"
               name="password"
               onChange={(e) =>
                 setValues({ ...values, password: e.target.value })
               }
             />
-            <button type="submit">Test</button>
+            {isLogin ? (
+            <Link to="/register">
+              <h3 className="m-3 text-gray-400">Нямате акаунт? Регистрирайте се.</h3>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <h3 className="m-3 text-gray-400">Имате акаунт? Влезте.</h3>
+            </Link>
+          )}
+            <button
+              type="submit"
+              className="drop-shadow-md w-40 m-2 h-10 rounded-2xl text-base bg-gradient-to-r dark:from-[#8e44ad] dark:via-[#D76D77] dark:to-[#c0392b] from-[#f2709c]  to-[#ff9472] text-taskify-lightElement dark:text-taskify-lightBlue"
+            >
+              {isLogin ? "ВЛЕЗ" : "РЕГИСТРАЦИЯ"}
+            </button>
           </form>
         </div>
       </div>

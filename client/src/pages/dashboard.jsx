@@ -14,7 +14,7 @@ export const Dashboard = () => {
   const [buttonPopup, setButtonPopup] = useState(false);
   const nav = useNavigate();
   const [selectedList, setSelectedList] = useState(
-    Cookies.get("selectedList") || "1"
+    Cookies.get("selectedList") || "default"
   );
 
   useEffect(() => {

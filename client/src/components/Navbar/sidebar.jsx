@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { ListTab } from "../List/listTab";
 import { Link } from "react-router-dom";
 import axios from "axios";
+
 export const Sidebar = ({ user, setSelectedList }) => {
   const [open, setOpen] = useState(false);
-  const [lists, setLists] = useState([]);
+  const [lists, setLists] = useState([
+    { listid: "default", listname: "Default List" },
+  ]);
   const [newListName, setNewListName] = useState("");
+  const [editingInProgress, setEditingInProgress] = useState(false); // State for editing in progress
 
   const handleInputChange = (e) => {
     setNewListName(e.target.value);
@@ -13,24 +17,35 @@ export const Sidebar = ({ user, setSelectedList }) => {
 
   const handleCreateNewList = async (event) => {
     event.preventDefault();
-    axios.post("http://localhost:2608/createList", {
-      newListName: newListName,
-      user: user,
-    });
-    setNewListName("");
+    try {
+      await axios.post("http://localhost:2608/createList", {
+        newListName: newListName,
+        user: user,
+      });
+      // After creating a new list, fetch the updated lists
+      fetchLists();
+      setNewListName("");
+    } catch (error) {
+      console.error("Error creating list:", error);
+    }
+  };
+
+  const fetchLists = async () => {
+    try {
+      // Fetch additional lists from the server
+      const response = await axios.get(`http://localhost:2608/getList/${user}`);
+
+      // Combine fetched lists with the default list
+      setLists([
+        { listid: "default", listname: "Default List" },
+        ...response.data,
+      ]);
+    } catch (error) {
+      console.error("Error fetching lists:", error);
+    }
   };
 
   useEffect(() => {
-    const fetchLists = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:2608/getList/${user}`
-        );
-        setLists(response.data);
-      } catch (error) {
-        console.error("Error fetching lists:", error);
-      }
-    };
     fetchLists();
   }, [lists]);
 
@@ -44,6 +59,15 @@ export const Sidebar = ({ user, setSelectedList }) => {
 
   const handleListClick = (listId) => {
     setSelectedList(listId);
+    setEditingInProgress(false); 
+  };
+  
+
+  const handleListDelete = (deletedListId) => {
+    // Update the lists state to remove the deleted list
+    setLists((prevLists) =>
+      prevLists.filter((list) => list.listid !== deletedListId)
+    );
   };
 
   return (
@@ -116,6 +140,9 @@ export const Sidebar = ({ user, setSelectedList }) => {
               listId={list.listid}
               listName={list.listname}
               onClick={handleListClick}
+              onDelete={handleListDelete}
+              editingInProgress={editingInProgress} // Pass the editingInProgress state
+              setEditingInProgress={setEditingInProgress} // Pass the function to update the editingInProgress state
             />
           ))}
         </ul>

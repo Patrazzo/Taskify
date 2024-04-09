@@ -9,7 +9,7 @@ export default {
     extend: {},
     screens: {
       phone: { max: "850px" },
-      smallphone: { max: "400px" },
+      smallphone: { max: "450px" },
       dashboard: { max: "1050px" },
       sidebar: { max: "1450px" },
     },

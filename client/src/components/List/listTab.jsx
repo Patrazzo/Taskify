@@ -1,18 +1,26 @@
 import React, { useState } from "react";
 import axios from "axios";
-export const ListTab = ({ listId, listName, onClick }) => {
+
+export const ListTab = ({ listId, listName, onClick, onDelete, editingInProgress, setEditingInProgress }) => {
   const [editable, setEditable] = useState(false);
   const [name, setName] = useState(listName);
+
   const handleClick = () => {
     onClick(listId);
+    console.log("editingInProgress:", editingInProgress);
+    console.log("editable:", editable);
   };
 
   const handleEdit = () => {
-    setEditable(!editable);
+    if (!editingInProgress) {
+      setEditable(true);
+      setEditingInProgress(true);
+    }
   };
 
   const submitEdit = async () => {
     setEditable(false);
+    setEditingInProgress(false);
     try {
       await axios.put(`http://localhost:2608/lists/${listId}`, {
         listName: name,
@@ -24,8 +32,10 @@ export const ListTab = ({ listId, listName, onClick }) => {
 
   const submitDelete = async () => {
     setEditable(false);
+    setEditingInProgress(false);
     try {
       await axios.delete(`http://localhost:2608/lists/${listId}`);
+      onDelete(listId); // Call the onDelete callback
     } catch (error) {
       console.error("Error deleting list :", error);
     }
@@ -100,21 +110,23 @@ export const ListTab = ({ listId, listName, onClick }) => {
                 </svg>
               </button>
             ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-5 h-5 stroke-gray-500 hover:stroke-taskify-lightElement"
-                onClick={handleEdit}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                />
-              </svg>
+              <button disabled={editingInProgress}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5 stroke-gray-500 hover:stroke-taskify-lightElement"
+                  onClick={handleEdit}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                  />
+                </svg>
+              </button>
             )}
           </div>
         </div>
