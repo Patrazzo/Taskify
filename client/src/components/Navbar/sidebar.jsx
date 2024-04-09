@@ -6,10 +6,10 @@ import axios from "axios";
 export const Sidebar = ({ user, setSelectedList }) => {
   const [open, setOpen] = useState(false);
   const [lists, setLists] = useState([
-    { listid: "default", listname: "Default List" },
+    { index: 0, listid: "default", listname: "Default List" },
   ]);
   const [newListName, setNewListName] = useState("");
-  const [editingInProgress, setEditingInProgress] = useState(false); // State for editing in progress
+  const [editingInProgress, setEditingInProgress] = useState(false); 
 
   const handleInputChange = (e) => {
     setNewListName(e.target.value);
@@ -22,7 +22,6 @@ export const Sidebar = ({ user, setSelectedList }) => {
         newListName: newListName,
         user: user,
       });
-      // After creating a new list, fetch the updated lists
       fetchLists();
       setNewListName("");
     } catch (error) {
@@ -32,14 +31,9 @@ export const Sidebar = ({ user, setSelectedList }) => {
 
   const fetchLists = async () => {
     try {
-      // Fetch additional lists from the server
       const response = await axios.get(`http://localhost:2608/getList/${user}`);
-
-      // Combine fetched lists with the default list
-      setLists([
-        { listid: "default", listname: "Default List" },
-        ...response.data,
-      ]);
+      const fetchedLists = response.data.map((list, index) => ({ ...list, index }));
+      setLists([{ index: 0, listid: "default", listname: "Default List" }, ...fetchedLists]);
     } catch (error) {
       console.error("Error fetching lists:", error);
     }
@@ -47,7 +41,7 @@ export const Sidebar = ({ user, setSelectedList }) => {
 
   useEffect(() => {
     fetchLists();
-  }, [lists]);
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -62,9 +56,7 @@ export const Sidebar = ({ user, setSelectedList }) => {
     setEditingInProgress(false); 
   };
   
-
   const handleListDelete = (deletedListId) => {
-    // Update the lists state to remove the deleted list
     setLists((prevLists) =>
       prevLists.filter((list) => list.listid !== deletedListId)
     );
@@ -141,8 +133,8 @@ export const Sidebar = ({ user, setSelectedList }) => {
               listName={list.listname}
               onClick={handleListClick}
               onDelete={handleListDelete}
-              editingInProgress={editingInProgress} // Pass the editingInProgress state
-              setEditingInProgress={setEditingInProgress} // Pass the function to update the editingInProgress state
+              editingInProgress={editingInProgress}
+              setEditingInProgress={setEditingInProgress}
             />
           ))}
         </ul>
