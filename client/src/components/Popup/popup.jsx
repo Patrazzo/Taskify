@@ -79,7 +79,7 @@ function Popup({ trigger, setTrigger, selectedList }) {
         <div className="flex items-center justify-center flex-col">
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <input
-              className="mt-6 rounded-lg w-72 resize-none bg-taskify-lightBackground dark:bg-taskify-DarkBlue text-white border-spacing-0"
+              className="mt-6 rounded-lg w-72 resize-none bg-taskify-lightBackground dark:bg-taskify-DarkBlue text-taskify-textLightDarkColor dark:text-taskify-lightElement border-spacing-0"
               type="text"
               id="name"
               name="name"
@@ -89,7 +89,7 @@ function Popup({ trigger, setTrigger, selectedList }) {
               required
             />
             <textarea
-              className="mt-6 rounded-lg resize-none main-color bg-taskify-lightBackground dark:bg-taskify-DarkBlue text-white !important custom"
+              className="mt-6 rounded-lg resize-none main-color bg-taskify-lightBackground dark:bg-taskify-DarkBlue text-taskify-textLightDarkColor dark:text-taskify-lightElement"
               id="message"
               name="message"
               value={description}

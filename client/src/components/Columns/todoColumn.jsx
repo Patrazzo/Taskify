@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 
 export const TodoColumn = ({ selectedList }) => {
   const [tasks, setTasks] = useState([]);
+  const [editingInProgress, setEditingInProgress] = useState(false); 
 
   useEffect(() => {
     // Save selected list to cookie whenever it changes
@@ -97,6 +98,8 @@ export const TodoColumn = ({ selectedList }) => {
               description={task.description}
               onUpdate={handleTaskUpdate}
               onDelete={handleTaskDelete}
+              editingInProgress={editingInProgress}
+              setEditingInProgress={setEditingInProgress}
             />
           ))}
       </div>

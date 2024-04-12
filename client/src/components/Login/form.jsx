@@ -52,7 +52,7 @@ const Form = ({ type }) => {
               {isLogin ? "ВЛИЗАНЕ" : "РЕГИСТРАЦИЯ"}
             </h1>
             <input
-              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 dark:bg-taskify-lightBlue"
+              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 dark:text-taskify-lightElement text-taskify-DarkBlue dark:bg-taskify-lightBlue"
               type="text"
               placeholder="Потребител"
               name="username"
@@ -61,7 +61,7 @@ const Form = ({ type }) => {
               }
             />
             <input
-              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 dark:bg-taskify-lightBlue"
+              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 dark:text-taskify-lightElement text-taskify-DarkBlue dark:bg-taskify-lightBlue"
               type="password"
               placeholder="Парола"
               name="password"

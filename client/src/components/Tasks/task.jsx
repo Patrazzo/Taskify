@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export const Task = ({ id, title, description }) => {
+export const Task = ({
+  id,
+  title,
+  description,
+  editingInProgress,
+  setEditingInProgress,
+}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleDragStart = (event) => {
@@ -15,15 +21,18 @@ export const Task = ({ id, title, description }) => {
 
   const handleClick = () => {
     setIsPopupOpen(true);
+    setEditingInProgress(true)
   };
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
+    setEditingInProgress(false);
   };
 
   const handleUpdate = (updatedTitle, updatedDescription) => {
     onUpdate(id, updatedTitle, updatedDescription);
     setIsPopupOpen(false);
+    setEditingInProgress(false);
   };
 
   return (
@@ -38,8 +47,12 @@ export const Task = ({ id, title, description }) => {
       >
         <div className="w-full flex flex-row justify-between">
           <div className="taskData">
-            <h3 className="text-md mb-1 line-clamp-1">{title}</h3>
-            <p className="text-xs line-clamp-1">{description}</p>
+            <h3 className="text-md mb-1 line-clamp-1 dark:text-taskify-lightBackground text-taskify-textLightDarkColor">
+              {title}
+            </h3>
+            <p className="text-xs font-thin dark:text-taskify-lightDarkElement text-taskify-textLightDarkColor line-clamp-1">
+              {description}
+            </p>
           </div>
           <div className="flex justify-center items-center">
             {isPopupOpen ? (
@@ -47,7 +60,7 @@ export const Task = ({ id, title, description }) => {
                 width="15"
                 height="15"
                 viewBox="0 0 46 47"
-                fill="none"
+                fill="red"
                 xmlns="http://www.w3.org/2000/svg"
                 onClick={handleClosePopup}
               >
@@ -58,7 +71,11 @@ export const Task = ({ id, title, description }) => {
                   height="60"
                   rx="5"
                   transform="rotate(44.8594 40.3222 -2)"
-                  fill="white"
+                  fill={
+                    localStorage.getItem("theme") === "dark"
+                      ? "#f7f7f2"
+                      : "#1e6091"
+                  }
                 />
                 <rect
                   x="47.0588"
@@ -67,25 +84,30 @@ export const Task = ({ id, title, description }) => {
                   height="60"
                   rx="5"
                   transform="rotate(137.269 47.0588 42.073)"
-                  fill="white"
+                  fill={
+                    localStorage.getItem("theme") === "dark"
+                      ? "#f7f7f2"
+                      : "#1e6091"
+                  }
                 />
               </svg>
             ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6 stroke-gray-500 transition-colors duration-100 hover:stroke-taskify-lightElement"
-                onClick={handleClick}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
-                />
-              </svg>
+              <button onClick={handleClick} disabled={editingInProgress}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6 stroke-gray-500 transition-colors duration-100 dark:hover:stroke-taskify-lightElement hover:stroke-taskify-DarkBlue"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
+                  />
+                </svg>
+              </button>
             )}
           </div>
         </div>
@@ -147,13 +169,14 @@ const Popup = ({ id, title, description, onClose, onUpdate }) => {
         />
         <div className="flex flex-row w-full justify-between">
           <button
-            className="flex justify-center items-center w-20 h-8 p-4 m-3 dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green rounded-full dark:hover:text-taskify-lightBlue"
+            className="flex justify-center items-center w-20 h-8 p-4 m-3 bg-taskify-lightDarkElement hover:bg-[#20e3b2] hover:text-taskify-lightElement dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green rounded-full dark:hover:text-taskify-lightBlue"
             onClick={handleUpdate}
+            
           >
             Update
           </button>
           <button
-            className="flex justify-center items-center w-20 h-8 p-4 m-3 dark:bg-taskify-DarkBlue dark:hover:bg-red-600 rounded-full dark:hover:text-taskify-lightBlue"
+            className="flex justify-center items-center w-20 h-8 p-4 m-3 bg-taskify-lightDarkElement hover:bg-[#FF576F] hover:text-taskify-lightElement dark:bg-taskify-DarkBlue dark:hover:bg-red-600 rounded-full dark:hover:text-taskify-lightBlue"
             onClick={handleDelete}
           >
             Delete
