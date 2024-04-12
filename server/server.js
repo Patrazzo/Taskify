@@ -46,14 +46,38 @@ app.post("/register", (req, res) => {
   bcrypt.hash(req.body.password.toString(), 10, (err, hash) => {
     if (err) return res.json({ Error: "Error hashing password" });
 
-    const query = "INSERT INTO users (username, password) VALUES ($1, $2)";
+    const query = "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING userid";
     const values = [req.body.username, hash];
     pool.query(query, values, (err, result) => {
       if (err) return res.json({ Error: "Insert data error" });
-      return res.json({ Status: "Success" });
+      
+      const userid = result.rows[0].userid;
+
+      const listQuery = "INSERT INTO lists (userid, listname) VALUES ($1, $2) RETURNING listid";
+      const listValues = [userid, "Default"]; // Assuming you receive listname in the request body
+      pool.query(listQuery, listValues, (err, result) => {
+        if (err) return res.json({ Error: "Error creating list" });
+        
+        const listid = result.rows[0].listid;
+
+        
+        const taskQuery = "INSERT INTO tasks (listid, taskname, description, status) VALUES ($1, $2, $3, $4)";
+        const tutorialTasks =[
+          {name: "Създай лист", description: "Като влезеш в sidebar-a, въведеш име и натиснеш бутона 'СЪЗДАЙ'", staus:"todo"}
+        ]
+
+        tutorialTasks.forEach(task => {
+          const taskValues = [listid, task.name, task.description, task.staus];
+          pool.query(taskQuery, taskValues, (err, result) => {
+            if (err) return res.json({ Error: "Error inserting task" });
+          });
+        });
+        return res.json({ Status: "Success" });
+      });
     });
   });
 });
+
 
 app.post("/login", (req, res) => {
   const query = "SELECT * FROM users WHERE username = $1";

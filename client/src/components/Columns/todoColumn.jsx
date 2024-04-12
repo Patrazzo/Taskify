@@ -8,7 +8,6 @@ export const TodoColumn = ({ selectedList }) => {
   const [editingInProgress, setEditingInProgress] = useState(false); 
 
   useEffect(() => {
-    // Save selected list to cookie whenever it changes
     Cookies.set("selectedList", selectedList);
   }, [selectedList]);
 

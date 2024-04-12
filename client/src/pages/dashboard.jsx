@@ -42,6 +42,7 @@ export const Dashboard = () => {
   }, []);
   return (
     <div>
+      
       {auth ? (
         <div className="">
           <Header />
@@ -49,7 +50,7 @@ export const Dashboard = () => {
             {buttonPopup ? (
               " "
             ) : (
-              <Sidebar user={userId} setSelectedList={setSelectedList} />
+              <Sidebar user={userId} setSelectedList={setSelectedList} selectedList={selectedList} />
             )}
             <TaskifyPanel
               buttonPopup={buttonPopup}

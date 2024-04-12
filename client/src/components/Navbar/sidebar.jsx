@@ -3,7 +3,7 @@ import { ListTab } from "../List/listTab";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export const Sidebar = ({ user, setSelectedList }) => {
+export const Sidebar = ({ user, setSelectedList, selectedList }) => {
   const [open, setOpen] = useState(false);
   const [lists, setLists] = useState([]);
   const [newListName, setNewListName] = useState("");
@@ -31,6 +31,9 @@ export const Sidebar = ({ user, setSelectedList }) => {
     try {
       const response = await axios.get(`http://localhost:2608/getList/${user}`);
       const fetchedLists = response.data.map((list, index) => ({ ...list, index }));
+      if (selectedList === "default" && fetchedLists.length > 0) {
+        setSelectedList(fetchedLists[0].listid);
+      }
       setLists(fetchedLists);
     } catch (error) {
       console.error("Error fetching lists:", error);
@@ -58,6 +61,7 @@ export const Sidebar = ({ user, setSelectedList }) => {
     setLists((prevLists) =>
       prevLists.filter((list) => list.listid !== deletedListId)
     );
+    setSelectedList("default")
   };
 
   return (
