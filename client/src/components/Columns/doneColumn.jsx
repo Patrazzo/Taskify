@@ -18,7 +18,7 @@ export const DoneColumn = ({ selectedList }) => {
       }
     };
     fetchTasks();
-  }, [tasks]);
+  }, [tasks, selectedList]);
 
   const handleDragOver = (event) => {
     event.preventDefault(); // Necessary to allow dropping

@@ -5,9 +5,7 @@ import axios from "axios";
 
 export const Sidebar = ({ user, setSelectedList }) => {
   const [open, setOpen] = useState(false);
-  const [lists, setLists] = useState([
-    { index: 0, listid: "default", listname: "Default List" },
-  ]);
+  const [lists, setLists] = useState([]);
   const [newListName, setNewListName] = useState("");
   const [editingInProgress, setEditingInProgress] = useState(false); 
 
@@ -33,15 +31,15 @@ export const Sidebar = ({ user, setSelectedList }) => {
     try {
       const response = await axios.get(`http://localhost:2608/getList/${user}`);
       const fetchedLists = response.data.map((list, index) => ({ ...list, index }));
-      setLists([{ index: 0, listid: "default", listname: "Default List" }, ...fetchedLists]);
+      setLists(fetchedLists);
     } catch (error) {
       console.error("Error fetching lists:", error);
     }
   };
-
+  
   useEffect(() => {
     fetchLists();
-  }, []);
+  }, [lists]);
 
   useEffect(() => {
     if (open) {

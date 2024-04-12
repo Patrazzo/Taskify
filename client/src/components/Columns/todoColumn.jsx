@@ -15,28 +15,16 @@ export const TodoColumn = ({ selectedList }) => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        let response;
-        // Fetch tasks based on selected list, or fetch tasks from default list if selectedList is "default"
-        if (selectedList === "default") {
-          // Define default tasks here
-          const defaultTasks = [
-            { taskid: 1, taskname: "Default Task 1", description: "Description of Default Task 1", status: "todo" },
-            { taskid: 2, taskname: "Default Task 2", description: "Description of Default Task 2", status: "todo" },
-            // Add more default tasks as needed
-          ];
-          setTasks(defaultTasks);
-        } else {
-          response = await axios.get(
-            `http://localhost:2608/getTask/${selectedList}`
-          );
-          setTasks(response.data);
-        }
+        const response = await axios.get(
+          `http://localhost:2608/getTask/${selectedList}`
+        );
+        setTasks(response.data);
       } catch (error) {
-        console.error("Error fetching tasks:", error);
+        console.error("Error fetching lists:", error);
       }
     };
     fetchTasks();
-  }, [tasks]);
+  }, [tasks, selectedList]);
 
   const handleDragOver = (event) => {
     event.preventDefault();

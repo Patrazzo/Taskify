@@ -27,7 +27,6 @@ export const Dashboard = () => {
         if (response.data.Status === "Success") {
           setAuth(true);
           setName(response.data.username);
-          console.log("Received User ID from Server:", response.data.userid); // Add this line for debugging
           setUserId(response.data.userid);
         } else {
           setAuth(false);

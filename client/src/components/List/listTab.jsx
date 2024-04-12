@@ -7,8 +7,6 @@ export const ListTab = ({ listId, listName, onClick, onDelete, editingInProgress
 
   const handleClick = () => {
     onClick(listId);
-    console.log("editingInProgress:", editingInProgress);
-    console.log("editable:", editable);
   };
 
   const handleEdit = () => {
@@ -35,7 +33,7 @@ export const ListTab = ({ listId, listName, onClick, onDelete, editingInProgress
     setEditingInProgress(false);
     try {
       await axios.delete(`http://localhost:2608/lists/${listId}`);
-      onDelete(listId); // Call the onDelete callback
+      onDelete(listId);
     } catch (error) {
       console.error("Error deleting list :", error);
     }
