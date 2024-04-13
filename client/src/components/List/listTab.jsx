@@ -84,7 +84,7 @@ export const ListTab = ({
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-6 h-6 textColor"
+                className="w-6 stroke-gray-500 h-6 textColor"
               >
                 <path
                   strokeLinecap="round"
@@ -103,7 +103,7 @@ export const ListTab = ({
                 onChange={(e) => setName(e.target.value)}
               />
             ) : (
-              <span className="flex-1 ms-3 whitespace-nowrap">{listName}</span>
+              <span className="flex-1 ms-3 text-taskify-textLightDarkColor dark:text-taskify-lightBackground whitespace-nowrap">{listName}</span>
             )}
           </div>
 
@@ -131,7 +131,7 @@ export const ListTab = ({
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className="w-5 h-5 stroke-gray-500 hover:stroke-taskify-lightElement"
+                  className="w-5 h-5 stroke-gray-500 hover:stroke-taskify-textLightDarkColor"
                   onClick={handleEdit}
                 >
                   <path

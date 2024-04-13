@@ -82,7 +82,7 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke={
-          localStorage.getItem("theme") === "dark" ? "#f7f7f2" : "#17223b"
+          localStorage.getItem("theme") === "dark" ? "#f7f7f2" : "#1e6091"
         }
         className={`absolute m-2 cursor-pointer h-7 w-7 z-30 ${
           open
@@ -127,8 +127,8 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
                 type="text"
                 value={newListName}
                 onChange={handleInputChange}
-                placeholder="Enter list name"
-                className="border-none bg-taskify-lightDarkElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground rounded-md p-2"
+                placeholder="Въведи име на лист"
+                className="border-none bg-taskify-lightDarkElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor rounded-md p-2"
               />
               {showError ? (
                 <p className="text-xs text-[#FF576F]">
@@ -137,7 +137,7 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
               ) : null}
               <button
                 onClick={handleCreateNewList}
-                className="dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green hover:bg-taskify-Green dark:hover:text-taskify-lightBlue bg-taskify-lightDarkElement dark:text-taskify-lightDarkElement text-taskify-lightBlue px-4 mt-2 py-2 rounded-lg w-[200px]"
+                className="dark:bg-taskify-DarkBlue hover:text-taskify-lightBackground dark:hover:bg-taskify-Green hover:bg-taskify-Green dark:hover:text-taskify-lightBlue bg-taskify-lightDarkElement dark:text-taskify-lightDarkElement text-taskify-textLightDarkColor px-4 mt-2 py-2 rounded-lg w-[200px]"
               >
                 СЪЗДАЙ
               </button>

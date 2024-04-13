@@ -122,7 +122,7 @@ function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
                 ></textarea>
                 <button
                   type="submit"
-                  className="main-color dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green dark:hover:text-taskify-DarkBlue bg-taskify-lightBackground hover:bg-taskify-Green text-taskify-DarkBlue hover:text-taskify-lightElement dark:text-white py-2 px-4 rounded-lg cursor-pointer text-base m-6 transition "
+                  className="main-color dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green dark:hover:text-taskify-DarkBlue bg-taskify-lightBackground hover:bg-taskify-Green text-taskify-textLightDarkColor hover:text-taskify-lightElement dark:text-white py-2 px-4 rounded-lg cursor-pointer text-base m-6 transition "
                 >
                   Създай
                 </button>

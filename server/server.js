@@ -43,70 +43,127 @@ app.get("/validate", verifyUser, (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  bcrypt.hash(req.body.password.toString(), 10, (err, hash) => {
-    if (err) return res.json({ Error: "Error hashing password" });
+  const { username, password } = req.body;
+  if (username.length < 4) {
+    return res.json({ Error: "Потребителското име трябва да бъде поне 4 символа!" });
+  }
+  if (password.length < 8) {
+    return res.json({ Error: "Паролата трябва да бъде поне 8 символа!" });
+  }
 
-    const query = "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING userid";
-    const values = [req.body.username, hash];
-    pool.query(query, values, (err, result) => {
-      if (err) return res.json({ Error: "Insert data error" });
-      
-      const userid = result.rows[0].userid;
+  // Check if username already exists
+  const checkUsernameQuery = "SELECT * FROM users WHERE username = $1";
+  const checkUsernameValues = [username];
+  pool.query(checkUsernameQuery, checkUsernameValues, (err, result) => {
+    if (err) {
+      return res.json({ Error: "Database error" });
+    }
+    if (result.rows.length > 0) {
+      return res.json({ Error: "Потребителят вече съществува!" });
+    }
 
-      const listQuery = "INSERT INTO lists (userid, listname) VALUES ($1, $2) RETURNING listid";
-      const listValues = [userid, "Default"]; // Assuming you receive listname in the request body
-      pool.query(listQuery, listValues, (err, result) => {
-        if (err) return res.json({ Error: "Error creating list" });
-        
-        const listid = result.rows[0].listid;
+    // If username is valid and doesn't exist, proceed with registration
+    bcrypt.hash(password.toString(), 10, (err, hash) => {
+      if (err) return res.json({ Error: "Error hashing password" });
 
-        
-        const taskQuery = "INSERT INTO tasks (listid, taskname, description, status) VALUES ($1, $2, $3, $4)";
-        const tutorialTasks =[
-          {name: "Създай лист", description: "Като влезеш в sidebar-a, въведеш име и натиснеш бутона 'СЪЗДАЙ'", staus:"todo"}
-        ]
+      const insertUserQuery =
+        "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING userid";
+      const insertUserValues = [username, hash];
+      pool.query(insertUserQuery, insertUserValues, (err, result) => {
+        if (err) return res.json({ Error: "Error creating user" });
 
-        tutorialTasks.forEach(task => {
-          const taskValues = [listid, task.name, task.description, task.staus];
-          pool.query(taskQuery, taskValues, (err, result) => {
-            if (err) return res.json({ Error: "Error inserting task" });
+        const userid = result.rows[0].userid;
+
+        // Insert default list for the user
+        const insertListQuery =
+          "INSERT INTO lists (userid, listname) VALUES ($1, $2) RETURNING listid";
+        const insertListValues = [userid, "Обучение"];
+        pool.query(insertListQuery, insertListValues, (err, result) => {
+          if (err) return res.json({ Error: "Error creating default list" });
+
+          const listid = result.rows[0].listid;
+
+          // Insert default tasks for the list
+          const insertTaskQuery =
+            "INSERT INTO tasks (listid, taskname, description, status) VALUES ($1, $2, $3, $4)";
+          const tutorialTasks = [
+            {
+              name: "Създай лист",
+              description:
+                "Като влезеш в sidebar-a, въведеш име и натиснеш бутона 'СЪЗДАЙ'",
+              status: "todo",
+            },
+            {
+              name: "Създай задача",
+              description:
+                "Като натиснеш бутона 'ДОБАВИ ЗАДАЧА'",
+              status: "todo",
+            },
+            {
+              name: "Добави описание на тази задача",
+              description:
+                "",
+              status: "todo",
+            },
+            {
+              name: "Завърши туториъла",
+              description:
+                "Като преместиш всички задачи в 'ЗАВЪРШЕНИ'",
+              status: "todo",
+            },
+          ];
+
+          tutorialTasks.forEach((task) => {
+            const taskValues = [
+              listid,
+              task.name,
+              task.description,
+              task.status,
+            ];
+            pool.query(insertTaskQuery, taskValues, (err, result) => {
+              if (err) console.error("Error inserting task:", err);
+            });
           });
+
+          return res.json({ Status: "Success" });
         });
-        return res.json({ Status: "Success" });
       });
     });
   });
 });
 
-
 app.post("/login", (req, res) => {
   const query = "SELECT * FROM users WHERE username = $1";
   pool.query(query, [req.body.username], (err, result) => {
-    if (err) return res.status(500).json({ Error: "Login error" });
-    if (result.rows.length > 0) {
-      bcrypt.compare(
-        req.body.password.toString(),
-        result.rows[0].password,
-        (err, response) => {
-          if (err)
-            return res.status(500).json({ Error: "Password comparison error" });
-          if (response) {
-            const { username, userid } = result.rows[0];
-            const token = jwt.sign({ username, userid }, "secret", {
-              expiresIn: "7d",
-            });
-            res.cookie("token", token);
-            return res.json({ Status: "Success" });
-          } else {
-            return res.status(401).json({ Error: "Password doesn't match" });
-          }
-        }
-      );
-    } else {
-      return res.status(404).json({ Error: "No such user" });
+    if (err) return res.json({ Error: "Login error" });
+
+    if (result.rows.length === 0) {
+      return res.json({ Error: "Потребителят не съществува!" });
     }
+
+    // User exists, now compare passwords
+    bcrypt.compare(
+      req.body.password.toString(),
+      result.rows[0].password,
+      (err, response) => {
+        if (err)
+          return res.json({ Error: "Password comparison error" });
+
+        if (response) {
+          const { username, userid } = result.rows[0];
+          const token = jwt.sign({ username, userid }, "secret", {
+            expiresIn: "7d",
+          });
+          res.cookie("token", token);
+          return res.json({ Status: "Success" });
+        } else {
+          return res.json({ Error: "Грешна парола!" });
+        }
+      }
+    );
   });
 });
+
 
 app.post("/createList", (req, res) => {
   const query = "INSERT INTO lists (userid, listname) VALUES ($1, $2)";
@@ -243,15 +300,17 @@ app.delete("/lists/:listid", async (req, res) => {
   const client = await pool.connect(); // Acquire a client from the pool
 
   try {
-    await client.query('BEGIN'); // Start a transaction
+    await client.query("BEGIN"); // Start a transaction
 
     // Delete tasks associated with the list
-    await client.query('DELETE FROM tasks WHERE listid = $1', [listId]);
+    await client.query("DELETE FROM tasks WHERE listid = $1", [listId]);
 
     // Delete the list
-    const result = await client.query('DELETE FROM lists WHERE listid = $1', [listId]);
-    
-    await client.query('COMMIT'); // Commit the transaction
+    const result = await client.query("DELETE FROM lists WHERE listid = $1", [
+      listId,
+    ]);
+
+    await client.query("COMMIT"); // Commit the transaction
 
     if (result.rowCount === 0) {
       res.status(404).json({ error: "List not found" });
@@ -259,14 +318,13 @@ app.delete("/lists/:listid", async (req, res) => {
       res.json({ message: "List and associated tasks deleted successfully" });
     }
   } catch (error) {
-    await client.query('ROLLBACK'); // Rollback the transaction in case of error
+    await client.query("ROLLBACK"); // Rollback the transaction in case of error
     console.error("Error deleting list:", error);
     res.status(500).json({ error: "Internal Server Error" });
   } finally {
     client.release(); // Release the client back to the pool
   }
 });
-
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
