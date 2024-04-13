@@ -9,7 +9,7 @@ export const ListTab = ({
   editingInProgress,
   setEditingInProgress,
   setShowError,
-  showError,
+  isSelected, 
 }) => {
   const [editable, setEditable] = useState(false);
   const [name, setName] = useState(listName);
@@ -58,10 +58,10 @@ export const ListTab = ({
   return (
     <>
       <li className="mx-4">
-        <div className="flex p-2 flex-row items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+        <div className={`flex p-2 flex-row items-center justify-between ${isSelected ? 'bg-gray-100 dark:bg-gray-700' : 'hover:bg-gray-100 dark:hover:bg-gray-700'} rounded-lg`}>
           <div
             onClick={handleClick}
-            className="flex items-center w-11/12 text-gray-900 dark:text-white  "
+            className="flex items-center w-11/12 text-gray-900 dark:text-white"
           >
             {editable ? (
               <svg

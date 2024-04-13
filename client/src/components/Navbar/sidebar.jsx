@@ -9,6 +9,7 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
   const [newListName, setNewListName] = useState("");
   const [editingInProgress, setEditingInProgress] = useState(false);
   const [showError, setShowError] = useState(false);
+  
   const handleInputChange = (e) => {
     setNewListName(e.target.value);
   };
@@ -102,7 +103,9 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
         className={`fixed top-0 left-0 w-full h-full dark:bg-taskify-lightBlue bg-taskify-lightElement z-20 transition-opacity duration-300 ${
           open ? "opacity-50" : "opacity-0 pointer-events-none"
         }`}
-        onClick={() => {setOpen(!open), setShowError(false)}}
+        onClick={() => {
+          setOpen(!open), setShowError(false);
+        }}
       />
       <div
         className={`fixed top-0 ${
@@ -152,8 +155,8 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
               onDelete={handleListDelete}
               editingInProgress={editingInProgress}
               setEditingInProgress={setEditingInProgress}
-              showError={showError}
               setShowError={setShowError}
+              isSelected={selectedList === list.listid} // Check if the list is selected
             />
           ))}
         </ul>

@@ -17,7 +17,7 @@ export const Card = ({
       <div className="text-xl bg-gradient-to-r from-[#8e44ad] via-[#D76D77] to-[#c0392b] text-transparent bg-clip-text">
         {heading}
       </div>
-      <div className="px-10 text-center">{description}</div>
+      <div className="px-10 text-center dark:text-taskify-lightBackground text-taskify-textLightDarkColor">{description}</div>
       <Button
         redirect={true}
         pathToLocation={"/dashboard"}

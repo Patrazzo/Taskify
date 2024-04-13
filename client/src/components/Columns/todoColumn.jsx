@@ -72,7 +72,7 @@ export const TodoColumn = ({ selectedList }) => {
       onDrop={handleDrop}
     >
       <div className="flex justify-center items-center bg-taskify-lightDarkElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightElement h-[60px] text-xl">
-        <h4>TODO</h4>
+        <h4>ЗАДАЧИ</h4>
       </div>
       <div className="max-h-[440px] overflow-y-auto">
         {tasks

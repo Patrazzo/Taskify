@@ -8,7 +8,7 @@ import { Fade } from "../components/Info/fade.jsx";
 import { Quote } from "../components/Info/quote.jsx";
 import { InfoDiv } from "../components/Info/infoDiv.jsx";
 import { Card } from "../components/Info/Card.jsx";
-import { SingleDiv } from "../components/Info/singleDiv.jsx";
+import { Button } from "../components/Button/button.jsx";
 const Home = () => {
   return (
     <div className="w-full h-auto">
@@ -36,15 +36,19 @@ const Home = () => {
           color={"taskify-lightElement"}
           darkColor={"taskify-lightBlue"}
           heading={"ИНТУИТИВЕН ДИЗАЙН"}
-          description={"Това е текста който ще обясни с няколко думи"}
-          buttonText={"Бутон4е"}
+          description={
+            "Taskify разполага с интуитивен и лесен за употреба интерфейс, който осигурява възможност за употреба на хора от всякакви възрасти!"
+          }
+          buttonText={"ПРОВЕРИ"}
         />
         <Card
           color={"taskify-lightElement"}
           darkColor={"taskify-lightBlue"}
-          heading={"ПИТАЙ ИВИ"}
-          description={"Това е текста който ще обясни с няколко думи"}
-          buttonText={"Бутон4е"}
+          heading={"СПЕСТЯВАНЕ НА ВРЕМЕ"}
+          description={
+            "С Taskify получавате възможността да разпределяте задачите си бързо и лесно като по този начин осигурите време за Вас и близките ви!"
+          }
+          buttonText={"ПРОВЕРИ"}
         />
       </InfoDiv>
       <InfoDiv
@@ -56,22 +60,26 @@ const Home = () => {
         <Card
           color={"taskify-lightElement"}
           darkColor={"taskify-lightBlue"}
-          heading={"ПИТАЙ ИВИ"}
-          description={"Това е текста който ще обясни с няколко думи"}
-          buttonText={"Бутон4е"}
+          heading={"СИГУРНОСТ И ЗАЩИТА"}
+          description={
+            "Вашите данни - защитени от хеширана парола и удостоверяване, осигурено от уникален ключ, наречен token."
+          }
+          buttonText={"ПРОВЕРИ"}
         />
         <Card
           color={"taskify-lightElement"}
           darkColor={"taskify-lightBlue"}
-          heading={"ПИТАЙ ИВИ"}
-          description={"Това е текста който ще обясни с няколко думи"}
-          buttonText={"Бутон4е"}
+          heading={"ИНОВАТИВНОСТ"}
+          description={
+            "Taskify е изграден с помощта на съвременни и иновативни технологии, подобряващи всеки аспект от приложението."
+          }
+          buttonText={"ПРОВЕРИ"}
         />
       </InfoDiv>
       <div className="pt-20 pb-10 px-32 phone:px-3 bg-[#20e3b2] dark:bg-[#06beb6]">
         <div className="flex flex-col justify-center items-center bg-[#20e3b2] dark:bg-[#06beb6] pb-10">
-          <div className="mb-1 text-lg font-medium text-taskify-lightElement drop-shadow">
-            Преди
+          <div className="mb-1 text-lg font-medium dark:text-taskify-lightBackground text-taskify-textLightDarkColor drop-shadow">
+            Продуктивността Ви преди Taskify
           </div>
           <div className="w-5/6 bg-gray-200 rounded-full h-3 mb-4 dark:bg-gray-700">
             <div
@@ -80,8 +88,8 @@ const Home = () => {
           </div>
         </div>
         <div className="flex flex-col justify-center items-center bg-[#20e3b2] dark:bg-[#06beb6] pb-10">
-          <div className="mb-1 text-lg font-medium text-taskify-lightElement drop-shadow">
-            След
+          <div className="mb-1 text-lg font-medium dark:text-taskify-lightBackground text-taskify-textLightDarkColor drop-shadow">
+            Продуктивността Ви след Taskify
           </div>
           <div className="w-5/6 bg-gray-200 rounded-full h-3 mb-4 dark:bg-gray-700">
             <div
@@ -93,7 +101,7 @@ const Home = () => {
       <Fade />
       <Info
         heading="Защо Taskify?"
-        description="Taskify е вашето решение
+        description="Taskify е решението
           за по-добро управление на времето и успешно постигане на целите.
           Независимо от вашата роля - студент, професионалист или човек търсещ
           оптимизация, Taskify ви предоставя интуитивни функции за ефективност и
@@ -102,37 +110,34 @@ const Home = () => {
       />
       <Info
         heading="Основни функции"
-        description="Taskify предлага интуитивен подход за ефективно управление на вашите задачи. 
-        С мощни функции и приятен дизайн, приложението ви помага да бъдете по-продуктивни в ежедневието."
+        description="Taskify предлага лесен подход за ефективно управление на вашите задачи. 
+        С мощни функции и приятен дизайн, приложението ви помага да бъдете по-продуктивни в ежедневието.
+        Като можете да добавяте, променяте и триете задачите си бързо и лесно."
         imgSrc="/assets/task.png"
         reverse="true"
       />
       <Info
-        heading="Защо Taskify?"
-        description="Taskify е вашето решение
-          за по-добро управление на времето и успешно постигане на целите.
-          Независимо от вашата роля - студент, професионалист или човек търсещ
-          оптимизация, Taskify ви предоставя интуитивни функции за ефективност и
-          успех."
+        heading="Каква е нашата цел??"
+        description="Taskify имаме за цел да помогнем на нашите потребители
+        да организират своето време и да постигат своите цели с лекота. Целим се в това
+        да ви направим по-продуктивни и ефективни."
         imgSrc="/assets/todolist.png"
       />
       <Quote
-        quote={"Hi meeeeen"}
+        quote="Успхме да изградим това приложение благодарение на него. 
+          Записвахме бъговете и задачите ни в Taskify, за да можем да визуализираме
+          целите си по-лесно и удобно."
         author={"Petar Petrov"}
-        who={"WebDeveloper"}
+        who={"Създател на Taskify"}
         image={"/assets/todolist.png"}
       />
-      <InfoDiv
-        direction={"center"}
-        color={"taskify-lightBackground"}
-        darkcolor={"taskify-DarkBlue"}
-        radius={""}
-      >
-        <SingleDiv
-          heading={"Заглавие зададено в home.jsx"}
-          text={"Добави описание и заглавие"}
+      <div className="w-full dark:bg-taskify-DarkBlue bg-taskify-lightBackground flex justify-center items-center p-10 pt-0">
+        <Button
+          redirect={true}
+          pathToLocation={"/dashboard"}
+          name={"ИЗПРОБВАЙ"}
         />
-      </InfoDiv>
+      </div>
       <Footer />
     </div>
   );
