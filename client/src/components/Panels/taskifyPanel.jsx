@@ -5,7 +5,7 @@ import { DoneColumn } from "../Columns/doneColumn";
 import { Button } from "../Button/button";
 import Popup from "../Popup/popup";
 
-export const TaskifyPanel = ({ buttonPopup, setButtonPopup, selectedList }) => {
+export const TaskifyPanel = ({ buttonPopup, setButtonPopup, selectedList, showError, setShowError }) => {
   return (
     <div className="p-4 m-3 flex flex-col items-center justify-center z-0">
       <Button setButtonPopup={setButtonPopup} name={"ДОБАВИ ЗАДАЧА"} />
@@ -19,6 +19,8 @@ export const TaskifyPanel = ({ buttonPopup, setButtonPopup, selectedList }) => {
         trigger={buttonPopup}
         setTrigger={setButtonPopup}
         selectedList={selectedList}
+        setShowError={setShowError}
+        showError={showError}
       />
     </div>
   );

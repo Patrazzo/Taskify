@@ -12,6 +12,7 @@ export const Dashboard = () => {
   const [error, setError] = useState("");
   const [userId, setUserId] = useState("");
   const [buttonPopup, setButtonPopup] = useState(false);
+  const [showError, setShowError] = useState(false)
   const nav = useNavigate();
   const [selectedList, setSelectedList] = useState(
     Cookies.get("selectedList") || "default"
@@ -47,7 +48,7 @@ export const Dashboard = () => {
         <div className="">
           <Header />
           <div className="flex flex-row justify-center h-auto min-h-screen phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
-            {buttonPopup ? (
+            {buttonPopup || showError ? (
               " "
             ) : (
               <Sidebar user={userId} setSelectedList={setSelectedList} selectedList={selectedList} />
@@ -56,6 +57,8 @@ export const Dashboard = () => {
               buttonPopup={buttonPopup}
               setButtonPopup={setButtonPopup}
               selectedList={selectedList}
+              showError={showError}
+              setShowError={setShowError}
             />
           </div>
           <Footer></Footer>

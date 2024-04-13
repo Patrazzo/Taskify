@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const InProgressColumn = ({ selectedList }) => {
   const [tasks, setTasks] = useState([]);
-
+  const [editingInProgress, setEditingInProgress] = useState(false); 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -78,6 +78,8 @@ export const InProgressColumn = ({ selectedList }) => {
               title={task.taskname}
               description={task.description}
               onUpdate={handleTaskUpdate} // Pass the onUpdate function
+              editingInProgress={editingInProgress}
+              setEditingInProgress={setEditingInProgress}
             />
           ))}
       </div>
