@@ -192,13 +192,13 @@ const Popup = ({
             className="flex justify-center items-center w-20 h-8 p-4 m-3 bg-taskify-lightDarkElement hover:bg-[#20e3b2] hover:text-taskify-lightElement dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green rounded-full dark:hover:text-taskify-lightBlue"
             onClick={handleUpdate}
           >
-            Update
+            Запази
           </button>
           <button
             className="flex justify-center items-center w-20 h-8 p-4 m-3 bg-taskify-lightDarkElement hover:bg-[#FF576F] hover:text-taskify-lightElement dark:bg-taskify-DarkBlue dark:hover:bg-red-600 rounded-full dark:hover:text-taskify-lightBlue"
             onClick={handleDelete}
           >
-            Delete
+            Изтрий
           </button>
         </div>
       </div>
