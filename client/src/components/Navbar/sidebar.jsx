@@ -7,30 +7,39 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
   const [open, setOpen] = useState(false);
   const [lists, setLists] = useState([]);
   const [newListName, setNewListName] = useState("");
-  const [editingInProgress, setEditingInProgress] = useState(false); 
-
+  const [editingInProgress, setEditingInProgress] = useState(false);
+  const [showError, setShowError] = useState(false);
   const handleInputChange = (e) => {
     setNewListName(e.target.value);
   };
 
   const handleCreateNewList = async (event) => {
     event.preventDefault();
-    try {
-      await axios.post("http://localhost:2608/createList", {
-        newListName: newListName,
-        user: user,
-      });
-      fetchLists();
-      setNewListName("");
-    } catch (error) {
-      console.error("Error creating list:", error);
+
+    if (newListName.trim() === "") {
+      setShowError(true);
+    } else {
+      try {
+        await axios.post("http://localhost:2608/createList", {
+          newListName: newListName,
+          user: user,
+        });
+        fetchLists();
+        setNewListName("");
+        setShowError(false);
+      } catch (error) {
+        console.error("Error creating list:", error);
+      }
     }
   };
 
   const fetchLists = async () => {
     try {
       const response = await axios.get(`http://localhost:2608/getList/${user}`);
-      const fetchedLists = response.data.map((list, index) => ({ ...list, index }));
+      const fetchedLists = response.data.map((list, index) => ({
+        ...list,
+        index,
+      }));
       if (selectedList === "default" && fetchedLists.length > 0) {
         setSelectedList(fetchedLists[0].listid);
       }
@@ -39,7 +48,7 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
       console.error("Error fetching lists:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchLists();
   }, [lists]);
@@ -54,14 +63,15 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
 
   const handleListClick = (listId) => {
     setSelectedList(listId);
-    setEditingInProgress(false); 
+    setEditingInProgress(false);
+    setShowError(false);
   };
-  
+
   const handleListDelete = (deletedListId) => {
     setLists((prevLists) =>
       prevLists.filter((list) => list.listid !== deletedListId)
     );
-    setSelectedList("default")
+    setSelectedList("default");
   };
 
   return (
@@ -92,7 +102,7 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
         className={`fixed top-0 left-0 w-full h-full dark:bg-taskify-lightBlue bg-taskify-lightElement z-20 transition-opacity duration-300 ${
           open ? "opacity-50" : "opacity-0 pointer-events-none"
         }`}
-        onClick={() => setOpen(!open)}
+        onClick={() => {setOpen(!open), setShowError(false)}}
       />
       <div
         className={`fixed top-0 ${
@@ -118,11 +128,16 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
                 value={newListName}
                 onChange={handleInputChange}
                 placeholder="Enter list name"
-                className="border-none bg-taskify-lightDarkElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground rounded-md p-2 mb-2"
+                className="border-none bg-taskify-lightDarkElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground rounded-md p-2"
               />
+              {showError ? (
+                <p className="text-xs text-[#FF576F]">
+                  Името трябва да съдържа поне 1 символ
+                </p>
+              ) : null}
               <button
                 onClick={handleCreateNewList}
-                className="dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green hover:bg-taskify-Green dark:hover:text-taskify-lightBlue bg-taskify-lightDarkElement dark:text-taskify-lightDarkElement text-taskify-lightBlue px-4 py-2 rounded-lg w-[200px]"
+                className="dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green hover:bg-taskify-Green dark:hover:text-taskify-lightBlue bg-taskify-lightDarkElement dark:text-taskify-lightDarkElement text-taskify-lightBlue px-4 mt-2 py-2 rounded-lg w-[200px]"
               >
                 СЪЗДАЙ
               </button>
@@ -137,6 +152,8 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
               onDelete={handleListDelete}
               editingInProgress={editingInProgress}
               setEditingInProgress={setEditingInProgress}
+              showError={showError}
+              setShowError={setShowError}
             />
           ))}
         </ul>

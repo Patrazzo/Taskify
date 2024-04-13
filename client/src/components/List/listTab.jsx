@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export const ListTab = ({ listId, listName, onClick, onDelete, editingInProgress, setEditingInProgress }) => {
+export const ListTab = ({
+  listId,
+  listName,
+  onClick,
+  onDelete,
+  editingInProgress,
+  setEditingInProgress,
+  setShowError,
+  showError,
+}) => {
   const [editable, setEditable] = useState(false);
   const [name, setName] = useState(listName);
 
@@ -17,14 +26,21 @@ export const ListTab = ({ listId, listName, onClick, onDelete, editingInProgress
   };
 
   const submitEdit = async () => {
-    setEditable(false);
-    setEditingInProgress(false);
-    try {
-      await axios.put(`http://localhost:2608/lists/${listId}`, {
-        listName: name,
-      });
-    } catch (error) {
-      console.error("Error updating list name:", error);
+    if (name === "") {
+      setName(listName);
+    } else if (name.trim() === "") {
+      setShowError(true);
+    } else {
+      setEditable(false);
+      setEditingInProgress(false);
+      setShowError(false)
+      try {
+        await axios.put(`http://localhost:2608/lists/${listId}`, {
+          listName: name,
+        });
+      } catch (error) {
+        console.error("Error updating list name:", error);
+      }
     }
   };
 

@@ -9,7 +9,7 @@ export const Task = ({
   setEditingInProgress,
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+  const [showValidationError, setShowValidationError] = useState(false);
   const handleDragStart = (event) => {
     event.dataTransfer.setData("text/plain", id);
     event.target.style.opacity = "0.9";
@@ -21,12 +21,13 @@ export const Task = ({
 
   const handleClick = () => {
     setIsPopupOpen(true);
-    setEditingInProgress(true)
+    setEditingInProgress(true);
   };
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
     setEditingInProgress(false);
+    setShowValidationError(false);
   };
 
   const handleUpdate = (updatedTitle, updatedDescription) => {
@@ -118,6 +119,8 @@ export const Task = ({
             description={description}
             onClose={handleClosePopup}
             onUpdate={handleUpdate}
+            setShowValidationError={setShowValidationError}
+            showValidationError={showValidationError}
           />
         )}
       </div>
@@ -125,21 +128,33 @@ export const Task = ({
   );
 };
 
-const Popup = ({ id, title, description, onClose, onUpdate }) => {
+const Popup = ({
+  id,
+  title,
+  description,
+  onClose,
+  onUpdate,
+  showValidationError,
+  setShowValidationError,
+}) => {
   const [updatedTitle, setUpdatedTitle] = useState(title);
   const [updatedDescription, setUpdatedDescription] = useState(description);
 
   const handleUpdate = async () => {
-    try {
-      await axios.put(`http://localhost:2608/tasks/${id}`, {
-        title: updatedTitle,
-        description: updatedDescription,
-      });
-      onUpdate(updatedTitle, updatedDescription);
-    } catch (error) {
-      console.error("Error updating task:", error);
+    if (updatedTitle.trim() === "") {
+      setShowValidationError(true);
+    } else {
+      try {
+        await axios.put(`http://localhost:2608/tasks/${id}`, {
+          title: updatedTitle,
+          description: updatedDescription,
+        });
+        onUpdate(updatedTitle, updatedDescription);
+      } catch (error) {
+        console.error("Error updating task:", error);
+      }
+      onClose();
     }
-    onClose();
   };
 
   const handleDelete = async () => {
@@ -161,6 +176,11 @@ const Popup = ({ id, title, description, onClose, onUpdate }) => {
           onChange={(e) => setUpdatedTitle(e.target.value)}
           className="w-full rounded-lg dark:bg-taskify-DarkBlue "
         />
+        {showValidationError ? (
+          <p className="text-xs text-[#FF576F]">
+            трябва да съдържа поне 1 символ
+          </p>
+        ) : null}
         <textarea
           value={updatedDescription}
           onChange={(e) => setUpdatedDescription(e.target.value)}
@@ -171,7 +191,6 @@ const Popup = ({ id, title, description, onClose, onUpdate }) => {
           <button
             className="flex justify-center items-center w-20 h-8 p-4 m-3 bg-taskify-lightDarkElement hover:bg-[#20e3b2] hover:text-taskify-lightElement dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green rounded-full dark:hover:text-taskify-lightBlue"
             onClick={handleUpdate}
-            
           >
             Update
           </button>

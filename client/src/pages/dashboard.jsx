@@ -12,7 +12,7 @@ export const Dashboard = () => {
   const [error, setError] = useState("");
   const [userId, setUserId] = useState("");
   const [buttonPopup, setButtonPopup] = useState(false);
-  const [showError, setShowError] = useState(false)
+  const [showError, setShowError] = useState(false);
   const nav = useNavigate();
   const [selectedList, setSelectedList] = useState(
     Cookies.get("selectedList") || "default"
@@ -43,7 +43,6 @@ export const Dashboard = () => {
   }, []);
   return (
     <div>
-      
       {auth ? (
         <div className="">
           <Header />
@@ -51,7 +50,12 @@ export const Dashboard = () => {
             {buttonPopup || showError ? (
               " "
             ) : (
-              <Sidebar user={userId} setSelectedList={setSelectedList} selectedList={selectedList} />
+              <Sidebar
+                user={userId}
+                setSelectedList={setSelectedList}
+                selectedList={selectedList}
+                
+              />
             )}
             <TaskifyPanel
               buttonPopup={buttonPopup}

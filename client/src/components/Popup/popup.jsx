@@ -5,6 +5,7 @@ import ErrorMessagePopup from "./error";
 function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [showValidationError, setShowValidationError] = useState(false);
   const popupRef = useRef(null);
 
   const handleNameChange = (e) => {
@@ -23,14 +24,18 @@ function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
       setName("");
       setDescription("");
     } else {
-      axios.post("http://localhost:2608/addTask", {
-        newName: name,
-        newDescription: description,
-        listId: selectedList,
-      });
-      setTrigger(false);
-      setName("");
-      setDescription("");
+      if (name.trim() === "") {
+        setShowValidationError(true);
+      } else {
+        axios.post("http://localhost:2608/addTask", {
+          newName: name,
+          newDescription: description,
+          listId: selectedList,
+        });
+        setTrigger(false);
+        setName("");
+        setDescription("");
+      }
     }
   };
 
@@ -38,6 +43,9 @@ function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
         setTrigger(false);
+        setName("");
+        setDescription("");
+        setShowValidationError(false);
       }
     };
 
@@ -64,7 +72,7 @@ function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
-                onClick={() => setTrigger(false)}
+                onClick={() => {setTrigger(false), setShowValidationError(false)}}
               >
                 <rect
                   x="40.3222"
@@ -97,8 +105,12 @@ function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
                   value={name}
                   onChange={handleNameChange}
                   placeholder="Заглавие"
-                  required
                 />
+                {showValidationError ? (
+                  <p className="text-xs text-center text-[#FF576F]">
+                    Заглавието трябва да съдържа поне 1 символ
+                  </p>
+                ) : null}
                 <textarea
                   className="mt-6 rounded-lg resize-none main-color bg-taskify-lightBackground dark:bg-taskify-DarkBlue text-taskify-textLightDarkColor dark:text-taskify-lightElement"
                   id="message"
@@ -110,7 +122,7 @@ function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
                 ></textarea>
                 <button
                   type="submit"
-                  className="main-color dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green dark:hover:text-taskify-DarkBlue bg-taskify-lightBackground hover:bg-taskify-Green text-taskify-DarkBlue hover:text-taskify-lightElement dark:text-white py-2 px-4 rounded-lg cursor-pointer text-base m-6 transition duration-1000"
+                  className="main-color dark:bg-taskify-DarkBlue dark:hover:bg-taskify-Green dark:hover:text-taskify-DarkBlue bg-taskify-lightBackground hover:bg-taskify-Green text-taskify-DarkBlue hover:text-taskify-lightElement dark:text-white py-2 px-4 rounded-lg cursor-pointer text-base m-6 transition "
                 >
                   Създай
                 </button>
@@ -149,10 +161,7 @@ function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
         </div>
       )}
       {showError && (
-        <ErrorMessagePopup
-          setShowError={setShowError}
-          showError={showError}
-        />
+        <ErrorMessagePopup setShowError={setShowError} showError={showError} />
       )}
     </>
   );
