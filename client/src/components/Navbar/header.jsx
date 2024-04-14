@@ -9,15 +9,16 @@ const Header = () => {
   const [name, setName] = useState("");
   const [userId, setUserId] = useState("");
   const [lastVisitedPage, setLastVisitedPage] = useState("/"); // Initialize with default root path
-
+  const [role, setRole] = useState("");
   const handleLogout = () => {
     // Delete cookies
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie =
       "selectedList=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-    
-    {auth ? window.location.href = lastVisitedPage : null}
+    {
+      auth ? (window.location.href = lastVisitedPage) : null;
+    }
   };
 
   useEffect(() => {
@@ -31,6 +32,7 @@ const Header = () => {
           setAuth(true);
           setName(response.data.username);
           setUserId(response.data.userid);
+          setRole(response.data.role);
         } else {
           setAuth(false);
           setError(response.data.Error);
@@ -42,8 +44,8 @@ const Header = () => {
     };
 
     fetchData();
-  }, []);
-
+  }, [auth]);
+  
   useEffect(() => {
     // Save the current page's URL to state whenever the path changes
     setLastVisitedPage(window.location.pathname);
@@ -57,12 +59,31 @@ const Header = () => {
           Taskify
         </h1>
       </Link>
-      <Button
-        redirect={true}
-        pathToLocation={auth ? null : "/login"}
-        passFun={handleLogout}
-        name={auth ? "ИЗЛИЗАНЕ" : "ВЛИЗАНЕ"}
-      />
+      {/* Conditionally render buttons based on user's role */}
+
+      {role === "su" ? (
+        <div className="flex gap-2">
+          <Button
+            redirect={true}
+            pathToLocation={"/administrator"}
+            passFun={null}
+            name={"АДМИН"}
+          />
+          <Button
+            redirect={true}
+            pathToLocation={auth ? null : "/login"}
+            passFun={handleLogout}
+            name={auth ? "ИЗЛИЗАНЕ" : "ВЛИЗАНЕ"}
+          />
+        </div>
+      ) : (
+        <Button
+          redirect={true}
+          pathToLocation={auth ? null : "/login"}
+          passFun={handleLogout}
+          name={auth ? "ИЗЛИЗАНЕ" : "ВЛИЗАНЕ"}
+        />
+      )}
     </div>
   );
 };

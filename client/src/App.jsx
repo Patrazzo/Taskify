@@ -11,8 +11,10 @@ import { Dashboard } from "./pages/dashboard.jsx";
 import Home from "./pages/home.jsx";
 import { RegisterPage } from "./pages/register.jsx";
 import NotFoundPage from "./pages/NotFound.jsx";
+import { AdminPanel } from "./pages/adminpanel.jsx";
 
 function App() {
+  
   return (
     <>
       <Router>
@@ -22,6 +24,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/administrator" element={<AdminPanel />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>

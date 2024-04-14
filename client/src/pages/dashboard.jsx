@@ -29,6 +29,7 @@ export const Dashboard = () => {
           setAuth(true);
           setName(response.data.username);
           setUserId(response.data.userid);
+          
         } else {
           setAuth(false);
           setError(response.data.Error);
@@ -41,11 +42,13 @@ export const Dashboard = () => {
 
     fetchData();
   }, []);
+
+  
   return (
     <div>
       {auth ? (
         <div className="">
-          <Header />
+          <Header/>
           <div className="flex flex-row justify-center h-auto min-h-screen phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
             {buttonPopup || showError ? (
               " "

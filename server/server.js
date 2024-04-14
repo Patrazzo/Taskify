@@ -28,6 +28,7 @@ const verifyUser = (req, res, next) => {
       } else {
         req.userid = decoded.userid;
         req.username = decoded.username;
+        req.role = decoded.role;
         next();
       }
     });
@@ -39,18 +40,203 @@ app.get("/validate", verifyUser, (req, res) => {
     Status: "Success",
     username: req.username,
     userid: req.userid,
+    role: req.role,
+  });
+});
+
+app.post("/login", (req, res) => {
+  const query = "SELECT userid, username, password, role FROM users WHERE username = $1";
+  pool.query(query, [req.body.username], (err, result) => {
+    if (err) return res.json({ Error: "Login error" });
+
+    if (result.rows.length === 0) {
+      return res.json({ Error: "Потребителят не съществува!" });
+    }
+
+    // User exists, now compare passwords
+    bcrypt.compare(
+      req.body.password.toString(),
+      result.rows[0].password,
+      (err, response) => {
+        if (err) return res.json({ Error: "Password comparison error" });
+
+        if (response) {
+          const { username, userid, role } = result.rows[0];
+          const token = jwt.sign({ username, userid, role }, "secret", {
+            expiresIn: "7d",
+          });
+          res.cookie("token", token);
+          console.log(role)
+          return res.json({ Status: "Success", role });
+        } else {
+          return res.json({ Error: "Грешна парола!" });
+        }
+      }
+    );
+  });
+});
+
+
+app.put('/updateUserRole/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const { role } = req.body; // Assuming role is sent in the request body
+
+  try {
+    await pool.query('UPDATE users SET role = $1 WHERE userid = $2', [role, userId]);
+    res.sendStatus(204); // No content
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+app.delete("/userDelete/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  console.log(userId);
+  try {
+    // Get the lists belonging to the user
+    const userLists = await pool.query(
+      "SELECT listid FROM lists WHERE userid = $1",
+      [userId]
+    );
+
+    // Delete tasks associated with each list belonging to the user
+    for (const list of userLists.rows) {
+      await pool.query("DELETE FROM tasks WHERE listid = $1", [list.listid]);
+    }
+
+    // Delete lists belonging to the user
+    await pool.query("DELETE FROM lists WHERE userid = $1", [userId]);
+
+    // Delete the user
+    const result = await pool.query("DELETE FROM users WHERE userid = $1", [
+      userId,
+    ]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting user:", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Route to get all users
+app.get("/users", async (req, res) => {
+  try {
+    // Retrieve all users with their respective number of lists, tasks, and roles
+    const usersQuery = `
+      SELECT 
+        u.userid,
+        u.username,
+        COUNT(DISTINCT l.listid) AS num_lists,
+        COUNT(t.taskid) AS num_tasks,
+        u.role
+      FROM 
+        users u
+      LEFT JOIN 
+        lists l ON u.userid = l.userid
+      LEFT JOIN 
+        tasks t ON l.listid = t.listid
+      GROUP BY 
+        u.userid, u.username, u.role
+      ORDER BY 
+        u.userid
+    `;
+
+    const usersResult = await pool.query(usersQuery);
+    const usersData = usersResult.rows;
+
+    res.json(usersData);
+  } catch (error) {
+    console.error("Error executing query", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/getAllUsers", (req, res) => {
+  const query = "SELECT * FROM users";
+  pool.query(query, (err, result) => {
+    if (err) {
+      console.error("Error retrieving users:", err);
+      return res.status(500).json({ Error: "Internal Server Error" });
+    }
+    if (result.rows.length === 0) {
+      return res.status(404).json({ Error: "No users found" });
+    }
+    return res.status(200).json(result.rows);
+  });
+});
+
+app.get("/getAllLists", (req, res) => {
+  const query = "SELECT * FROM lists";
+  pool.query(query, (err, result) => {
+    if (err) {
+      console.error("Error retrieving lists:", err);
+      return res.status(500).json({ Error: "Internal Server Error" });
+    }
+    if (result.rows.length === 0) {
+      return res.status(404).json({ Error: "No lists found" });
+    }
+    return res.status(200).json(result.rows);
+  });
+});
+
+app.get("/getAllUsers", (req, res) => {
+  const query = "SELECT * FROM users";
+  pool.query(query, (err, result) => {
+    if (err) {
+      console.error("Error retrieving users:", err);
+      return res.status(500).json({ Error: "Internal Server Error" });
+    }
+    if (result.rows.length === 0) {
+      return res.status(404).json({ Error: "No users found" });
+    }
+    return res.status(200).json(result.rows);
+  });
+});
+app.get("/getAllTasks", (req, res) => {
+  const query = "SELECT * FROM tasks";
+  pool.query(query, (err, result) => {
+    if (err) {
+      console.error("Error retrieving Tasks:", err);
+      return res.status(500).json({ Error: "Internal Server Error" });
+    }
+    if (result.rows.length === 0) {
+      return res.status(404).json({ Error: "No Tasks found" });
+    }
+    return res.status(200).json(result.rows);
+  });
+});
+
+app.get("/getAllDone", (req, res) => {
+  const query = "SELECT * FROM tasks WHERE status = 'done'";
+  pool.query(query, (err, result) => {
+    if (err) {
+      console.error("Error retrieving Tasks:", err);
+      return res.status(500).json({ Error: "Internal Server Error" });
+    }
+    if (result.rows.length === 0) {
+      return res.status(404).json({ Error: "No Tasks found" });
+    }
+    return res.status(200).json(result.rows);
   });
 });
 
 app.post("/register", (req, res) => {
   const { username, password } = req.body;
   if (username.length < 4) {
-    return res.json({ Error: "Потребителското име трябва да бъде поне 4 символа!" });
+    return res.json({
+      Error: "Потребителското име трябва да бъде поне 4 символа!",
+    });
   }
   if (password.length < 8) {
     return res.json({ Error: "Паролата трябва да бъде поне 8 символа!" });
   }
-
   // Check if username already exists
   const checkUsernameQuery = "SELECT * FROM users WHERE username = $1";
   const checkUsernameValues = [username];
@@ -95,20 +281,17 @@ app.post("/register", (req, res) => {
             },
             {
               name: "Създай задача",
-              description:
-                "Като натиснеш бутона 'ДОБАВИ ЗАДАЧА'",
+              description: "Като натиснеш бутона 'ДОБАВИ ЗАДАЧА'",
               status: "todo",
             },
             {
               name: "Добави описание на тази задача",
-              description:
-                "",
+              description: "",
               status: "todo",
             },
             {
               name: "Завърши туториъла",
-              description:
-                "Като преместиш всички задачи в 'ЗАВЪРШЕНИ'",
+              description: "Като преместиш всички задачи в 'ЗАВЪРШЕНИ'",
               status: "todo",
             },
           ];
@@ -132,37 +315,6 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
-  const query = "SELECT * FROM users WHERE username = $1";
-  pool.query(query, [req.body.username], (err, result) => {
-    if (err) return res.json({ Error: "Login error" });
-
-    if (result.rows.length === 0) {
-      return res.json({ Error: "Потребителят не съществува!" });
-    }
-
-    // User exists, now compare passwords
-    bcrypt.compare(
-      req.body.password.toString(),
-      result.rows[0].password,
-      (err, response) => {
-        if (err)
-          return res.json({ Error: "Password comparison error" });
-
-        if (response) {
-          const { username, userid } = result.rows[0];
-          const token = jwt.sign({ username, userid }, "secret", {
-            expiresIn: "7d",
-          });
-          res.cookie("token", token);
-          return res.json({ Status: "Success" });
-        } else {
-          return res.json({ Error: "Грешна парола!" });
-        }
-      }
-    );
-  });
-});
 
 
 app.post("/createList", (req, res) => {
