@@ -57,7 +57,8 @@ export const Dashboard = () => {
                 user={userId}
                 setSelectedList={setSelectedList}
                 selectedList={selectedList}
-                
+                name={name}
+                setName={setName}
               />
             )}
             <TaskifyPanel

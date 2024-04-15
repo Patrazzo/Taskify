@@ -3,13 +3,23 @@ import { ListTab } from "../List/listTab";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export const Sidebar = ({ user, setSelectedList, selectedList }) => {
+export const Sidebar = ({
+  user,
+  setSelectedList,
+  selectedList,
+  name,
+  setName,
+}) => {
   const [open, setOpen] = useState(false);
   const [lists, setLists] = useState([]);
   const [newListName, setNewListName] = useState("");
   const [editingInProgress, setEditingInProgress] = useState(false);
-  const [showError, setShowError] = useState(false);
-  
+  const [showError, setShowError] = useState("");
+  const [isEditing, setIsEditing] = useState("");
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleInputChange = (e) => {
     setNewListName(e.target.value);
   };
@@ -18,7 +28,7 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
     event.preventDefault();
 
     if (newListName.trim() === "") {
-      setShowError(true);
+      setShowError("Името трябва да съдържа поне 1 символ");
     } else {
       try {
         await axios.post("http://localhost:2608/createList", {
@@ -33,6 +43,41 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
       }
     }
   };
+
+  const handleProfileFormSubmit = (event) => {
+    event.preventDefault();
+    updateCredentials();
+    // Here you can handle the submission of username and password
+    console.log("Username:", username);
+    console.log("Password:", password);
+    console.log("user", user);
+    // Clear input fields
+    setUsername("");
+    setPassword("");
+  };
+
+  const updateCredentials = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:2608/updateCredentials",
+        {
+          username: username,
+          password: password,
+          user: user, // Assuming user is the identifier for the current user
+        }
+      );
+      console.log("Credentials updated:", response.data);
+      setShowError(false)
+    } catch (error) {
+      console.error("Error updating credentials:", error);
+      if (error.response && error.response.data && error.response.data.error) {
+        setShowError(error.response.data.error);
+      } else {
+        setShowError("An error occurred while updating credentials");
+      }
+    }
+  };
+  
 
   const fetchLists = async () => {
     try {
@@ -104,7 +149,7 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
           open ? "opacity-50" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => {
-          setOpen(!open), setShowError(false);
+          setOpen(!open), setShowError(false), setIsEditing(false);
         }}
       />
       <div
@@ -123,7 +168,7 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
             </h1>
           </div>
         </Link>
-        <ul className="flex justify-center flex-col space-y-2 font-medium pt-16">
+        <ul className="flex flex-col space-y-2 h-full font-medium pt-16">
           <li className="w-full flex items-center justify-center dark:bg-taskify-lightBlue">
             <div className="flex justify-center items-center flex-col w-full p-4">
               <input
@@ -134,8 +179,8 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
                 className="border-none bg-taskify-lightDarkElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor rounded-md p-2"
               />
               {showError ? (
-                <p className="text-xs text-[#FF576F]">
-                  Името трябва да съдържа поне 1 символ
+                <p className="text-xs text-center text-[#FF576F]">
+                  {showError}
                 </p>
               ) : null}
               <button
@@ -146,19 +191,91 @@ export const Sidebar = ({ user, setSelectedList, selectedList }) => {
               </button>
             </div>
           </li>
-          {lists.map((list) => (
-            <ListTab
-              key={list.listid}
-              listId={list.listid}
-              listName={list.listname}
-              onClick={handleListClick}
-              onDelete={handleListDelete}
-              editingInProgress={editingInProgress}
-              setEditingInProgress={setEditingInProgress}
-              setShowError={setShowError}
-              isSelected={selectedList === list.listid} // Check if the list is selected
-            />
-          ))}
+          <div className="max-h-[73%] overflow-y-auto">
+            {lists.map((list) => (
+              <ListTab
+                key={list.listid}
+                listId={list.listid}
+                listName={list.listname}
+                onClick={handleListClick}
+                onDelete={handleListDelete}
+                editingInProgress={editingInProgress}
+                setEditingInProgress={setEditingInProgress}
+                setShowError={setShowError}
+                isSelected={selectedList === list.listid} // Check if the list is selected
+              />
+            ))}
+          </div>
+          {isEditing ? (
+            <div>
+              <div className="fixed bottom-5 left-80 w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <div
+                  className="w-full px-4 py-2 text-base text-center rounded-t-lg
+                  text-taskify-textLightDarkColor bg-taskify-lightDarkElement 
+                  dark:text-taskify-lightBackground dark:bg-taskify-lightBlue
+                  "
+                >
+                  Промяна на данни
+                </div>
+                {/* Profile form */}
+                <form onSubmit={handleProfileFormSubmit}>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Ново име"
+                    className="border-none w-full bg-taskify-lightElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor p-2"
+                  />
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Нова парола"
+                    className="border-none w-full bg-taskify-lightElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor p-2"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full p-2 font-medium text-center bg-taskify-lightDarkElement dark:bg-taskify-lightBlue hover:bg-[#20e3b2] dark:hover:bg-taskify-Green rounded-b-lg text-taskify-textLightDarkColor dark:text-taskify-lightBackground cursor-pointer"
+                  >
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          ) : null}
+          <div
+            className={`fixed bottom-0 transition-all duration-300 ${
+              open ? "left-0" : "-left-full"
+            } w-72 h-14 flex items-center justify-between p-10 dark:bg-taskify-lightGreenBackground`}
+          >
+            <p className="dark:text-taskify-lightBackground text-lg text-taskify-textLightDarkColor">
+              {name}
+            </p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.2}
+              stroke={
+                localStorage.getItem("theme") === "dark" ? "#f7f7f2" : "#1e6091"
+              }
+              className="w-6 h-6 hover:rotate-45 transition-all duration-100 dark:bg-taskify-lightGreenBackground"
+              onClick={
+                isEditing ? () => setIsEditing(false) : () => setIsEditing(true)
+              }
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+            </svg>
+          </div>
         </ul>
       </div>
     </>

@@ -29,7 +29,7 @@ export const ListTab = ({
     if (name === "") {
       setName(listName);
     } else if (name.trim() === "") {
-      setShowError(true);
+      setShowError("Името трябва да съдържа поне 1 символ");
     } else {
       setEditable(false);
       setEditingInProgress(false);

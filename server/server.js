@@ -45,7 +45,8 @@ app.get("/validate", verifyUser, (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const query = "SELECT userid, username, password, role FROM users WHERE username = $1";
+  const query =
+    "SELECT userid, username, password, role FROM users WHERE username = $1";
   pool.query(query, [req.body.username], (err, result) => {
     if (err) return res.json({ Error: "Login error" });
 
@@ -66,7 +67,7 @@ app.post("/login", (req, res) => {
             expiresIn: "7d",
           });
           res.cookie("token", token);
-          console.log(role)
+          console.log(role);
           return res.json({ Status: "Success", role });
         } else {
           return res.json({ Error: "Грешна парола!" });
@@ -76,20 +77,21 @@ app.post("/login", (req, res) => {
   });
 });
 
-
-app.put('/updateUserRole/:userId', async (req, res) => {
+app.put("/updateUserRole/:userId", async (req, res) => {
   const { userId } = req.params;
   const { role } = req.body; // Assuming role is sent in the request body
 
   try {
-    await pool.query('UPDATE users SET role = $1 WHERE userid = $2', [role, userId]);
+    await pool.query("UPDATE users SET role = $1 WHERE userid = $2", [
+      role,
+      userId,
+    ]);
     res.sendStatus(204); // No content
   } catch (error) {
-    console.error('Error updating user role:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error updating user role:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 app.delete("/userDelete/:userId", async (req, res) => {
   const userId = req.params.userId;
@@ -155,6 +157,41 @@ app.get("/users", async (req, res) => {
   } catch (error) {
     console.error("Error executing query", error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.post("/updateCredentials", async (req, res) => {
+  const { username, password, user } = req.body;
+
+  // Validation checks for username and password length
+  if (username.length < 4) {
+    return res
+      .status(400)
+      .json({ error: "Потребителското име трябва да бъде поне 4 символа" });
+  }
+
+  if (password.length < 8) {
+    return res
+      .status(400)
+      .json({ error: "Паролата трябва да бъде поне 8 символа" });
+  }
+
+  try {
+    // Hash the new password with bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update the user's credentials in the database, including hashing the new password
+    const updateQuery = `
+      UPDATE users
+      SET username = $1, password = $2
+      WHERE userid = $3
+    `;
+    await pool.query(updateQuery, [username, hashedPassword, user]);
+
+    res.status(200).json({ message: "Credentials updated successfully" });
+  } catch (error) {
+    console.error("Error updating credentials:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -314,8 +351,6 @@ app.post("/register", (req, res) => {
     });
   });
 });
-
-
 
 app.post("/createList", (req, res) => {
   const query = "INSERT INTO lists (userid, listname) VALUES ($1, $2)";
