@@ -6,6 +6,7 @@ const cors = require("cors");
 const pool = require("./database.js");
 const app = express();
 const port = 2608;
+const secret = process.env.SECRET_KEY;
 
 app.use(express.json());
 app.use(
@@ -22,7 +23,7 @@ const verifyUser = (req, res, next) => {
   if (!token) {
     return res.json({ Error: "You are not authenticated" });
   } else {
-    jwt.verify(token, "secret", (err, decoded) => {
+    jwt.verify(token, secret, (err, decoded) => {
       if (err) {
         return res.json({ Error: "Token isn't valid" });
       } else {
@@ -63,7 +64,7 @@ app.post("/login", (req, res) => {
 
         if (response) {
           const { username, userid, role } = result.rows[0];
-          const token = jwt.sign({ username, userid, role }, "secret", {
+          const token = jwt.sign({ username, userid, role }, secret, {
             expiresIn: "7d",
           });
           res.cookie("token", token);
