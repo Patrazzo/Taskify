@@ -3,14 +3,15 @@ import React, { useState, useEffect } from "react";
 import { Task } from "../Tasks/task";
 import axios from "axios";
 
-export const DoneColumn = ({ selectedList }) => {
+export const DoneColumn = ({ selectedList, userId }) => {
   const [tasks, setTasks] = useState([]);
   const [editingInProgress, setEditingInProgress] = useState(false); 
+  
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:2608/getTask/${selectedList}`
+          `http://localhost:2608/getTask/${selectedList}?userId=${userId}`
         );
         setTasks(response.data);
       } catch (error) {
@@ -18,7 +19,7 @@ export const DoneColumn = ({ selectedList }) => {
       }
     };
     fetchTasks();
-  }, [tasks, selectedList]);
+  }, [selectedList, tasks]);
 
   const handleDragOver = (event) => {
     event.preventDefault(); // Necessary to allow dropping

@@ -390,11 +390,17 @@ app.get("/getList/:userid", (req, res) => {
 
 app.get("/getTask/:listid", async (req, res) => {
   const listId = req.params.listid;
+  const userId = req.query.userId; // Retrieve userId from query parameters
   try {
-    const query = "SELECT * FROM tasks WHERE listid = $1";
-    const { rows } = await pool.query(query, [listId]);
+    const query = `
+    SELECT tasks.*
+    FROM tasks
+    INNER JOIN lists ON tasks.listid = lists.listid
+    WHERE tasks.listid = $1 AND lists.userid = $2
+  `;
+    const { rows } = await pool.query(query, [listId, userId]);
 
-    // If there are no tasks found for the list, return an empty array
+    // If there are no tasks found for the list and user, return an empty array
     if (rows.length === 0) {
       return res.status(200).json([]);
     }

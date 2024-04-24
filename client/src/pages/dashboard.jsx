@@ -67,6 +67,7 @@ export const Dashboard = () => {
               selectedList={selectedList}
               showError={showError}
               setShowError={setShowError}
+              userId={userId}
             />
           </div>
           <Footer></Footer>

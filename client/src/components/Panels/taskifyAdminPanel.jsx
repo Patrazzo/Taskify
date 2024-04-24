@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../Button/button";
 import axios from "axios";
 
 export const TaskifyAdminPanel = () => {
@@ -146,6 +147,12 @@ export const TaskifyAdminPanel = () => {
     bg-taskify-lightBackground dark:bg-taskify-DarkBlue
     flex justify-center items-center flex-col"
         >
+          <Button
+            redirect={true}
+            pathToLocation={"/dashboard"}
+            passFun={null}
+            name={"ЗАДАЧИ"}
+          />
           <h1 className="m-2 text-3xl text-taskify-textLightDarkColor dark:text-taskify-lightBackground">
             Статистики
           </h1>
