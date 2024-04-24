@@ -52,14 +52,13 @@ const Header = () => {
   }, [window.location.pathname]);
 
   return (
-    <div className="drop-shadow m-0 w-full h-16 flex flex-row justify-between items-center p-8 smallphone:p-2 taskify-lightElement dark:bg-taskify-lightBlue">
+    <div className="drop-shadow m-0 w-full h-16 flex flex-row justify-between items-center p-8 smallphone:p-2 bg-taskify-lightElement dark:bg-taskify-lightBlue">
       <Link to="/home" className="flex flex-row items-center gap-2">
         <img src="/assets/logo.svg" alt="Logo" height={30} width={30} />
         <h1 className="text-2xl dark:text-white text-taskify-lightBlue">
           Taskify
         </h1>
       </Link>
-      {/* Conditionally render buttons based on user's role */}
 
       {role === "su" ? (
         <div className="flex gap-2">
