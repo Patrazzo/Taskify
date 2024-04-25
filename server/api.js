@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const express = require("express");
 const cors = require("cors");
-const pool = require("./database.js");
+const pool = require("./config.js");
 const app = express();
 const port = 2608;
 const secret = process.env.SECRET_KEY;
@@ -54,8 +54,6 @@ app.post("/login", (req, res) => {
     if (result.rows.length === 0) {
       return res.json({ Error: "Потребителят не съществува!" });
     }
-
-    // User exists, now compare passwords
     bcrypt.compare(
       req.body.password.toString(),
       result.rows[0].password,
@@ -304,10 +302,7 @@ app.post("/register", (req, res) => {
         const insertListValues = [userid, "Обучение"];
         pool.query(insertListQuery, insertListValues, (err, result) => {
           if (err) return res.json({ Error: "Error creating default list" });
-
           const listid = result.rows[0].listid;
-
-          // Insert default tasks for the list
           const insertTaskQuery =
             "INSERT INTO tasks (listid, taskname, description, status) VALUES ($1, $2, $3, $4)";
           const tutorialTasks = [

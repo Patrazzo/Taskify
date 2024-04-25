@@ -12,35 +12,34 @@ const Form = ({ type }) => {
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
-  const handleRegister = (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
-    axios
-      .post("http://localhost:2608/register", values)
-      .then((res) => {
-        if (res.data.Status === "Success") {
-          navigate("/login");
-        } else {
-          setErrorMessage(res.data.Error);
-        }
-      })
-      .catch((err) => console.error(err));
+    try {
+      const res = await axios.post("http://localhost:2608/register", values);
+      if (res.data.Status === "Success") {
+        navigate("/login");
+      } else {
+        setErrorMessage(res.data.Error);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    axios
-      .post("http://localhost:2608/login", values)
-      .then((res) => {
-        if (res.data.Status === "Success") {
-          navigate("/dashboard");
-        } else {
-          setErrorMessage(res.data.Error);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    try {
+      const res = await axios.post("http://localhost:2608/login", values);
+      if (res.data.Status === "Success") {
+        navigate("/dashboard");
+      } else {
+        setErrorMessage(res.data.Error);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
+  
 
   return (
     <div className="flex w-full h-[95vh] phone:h-auto dark:bg-taskify-DarkBlue bg-taskify-lightBackground">
