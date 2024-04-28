@@ -26,7 +26,7 @@ export const Sidebar = ({
 
   const handleCreateNewList = async (event) => {
     event.preventDefault();
-
+  
     if (newListName.trim() === "") {
       setShowError("Името трябва да съдържа поне 1 символ");
     } else {
@@ -35,6 +35,7 @@ export const Sidebar = ({
           newListName: newListName,
           user: user,
         });
+        fetchLists();
         setNewListName("");
         setShowError(false);
       } catch (error) {
@@ -43,9 +44,9 @@ export const Sidebar = ({
     }
   };
 
-  
 
-  const updateCredentials = async () => {
+  const updateCredentials = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:2608/updateCredentials",
@@ -68,6 +69,7 @@ export const Sidebar = ({
       }
     }
   };
+  
 
   const fetchLists = async () => {
     try {
