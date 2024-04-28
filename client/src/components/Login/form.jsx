@@ -49,13 +49,14 @@ const Form = ({ type }) => {
         } phone:flex-col-reverse`}
       >
         <div
-          className={`w-1/3 phone:w-full h-full phone:hidden bg-[#20e3b2] flex justify-center items-center flex-col  ${
+          className={`w-1/3 phone:w-full h-full phone:hidden bg-[#20e3b2] dark:bg-taskify-Green flex justify-center items-center flex-col  ${
             isLogin
               ? "rounded-tr-2xl rounded-br-3xl"
               : "rounded-tl-2xl rounded-bl-3xl"
           } `}
         >
-          <img src="/assets/todolist.png" alt="Logo" />
+          {isLogin ? <img src="/assets/Login.png" alt="Logo" />: <img src="/assets/todolist.png" alt="Logo" />}
+          
         </div>
         <div className="w-2/3 phone:w-full h-full phone:h-screen phone:justify-start phone:pt-10 dark:bg-taskify-DarkBlue bg-taskify-lightBackground flex items-center justify-center flex-col">
           <form

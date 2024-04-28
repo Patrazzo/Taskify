@@ -141,7 +141,7 @@ export const TaskifyAdminPanel = () => {
 
   return (
     <>
-      {auth && role === "su" ? (
+      {role === "su" ? (
         <div
           className="w-full h-auto py-10
     bg-taskify-lightBackground dark:bg-taskify-DarkBlue

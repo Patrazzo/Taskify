@@ -18,7 +18,7 @@ export const Welcome = () => {
         />
       </div>
       <div className="w-2/4 phone:w-full flex taskify-White-text justify-center items-center">
-        <img src="/assets/todolist.png" alt="Logo" />
+        <img src="/assets/Welcome.png" alt="Logo" />
       </div>
     </div>
   );
