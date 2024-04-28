@@ -59,7 +59,6 @@ app.post("/login", (req, res) => {
       result.rows[0].password,
       (err, response) => {
         if (err) return res.json({ Error: "Password comparison error" });
-
         if (response) {
           const { username, userid, role } = result.rows[0];
           const token = jwt.sign({ username, userid, role }, secret, {
@@ -161,32 +160,23 @@ app.get("/users", async (req, res) => {
 
 app.post("/updateCredentials", async (req, res) => {
   const { username, password, user } = req.body;
-
-  // Validation checks for username and password length
   if (username.length < 4) {
     return res
       .status(400)
       .json({ error: "Потребителското име трябва да бъде поне 4 символа" });
   }
-
   if (password.length < 8) {
     return res
       .status(400)
       .json({ error: "Паролата трябва да бъде поне 8 символа" });
   }
-
   try {
-    // Hash the new password with bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Update the user's credentials in the database, including hashing the new password
     const updateQuery = `
       UPDATE users
       SET username = $1, password = $2
-      WHERE userid = $3
-    `;
+      WHERE userid = $3`;
     await pool.query(updateQuery, [username, hashedPassword, user]);
-
     res.status(200).json({ message: "Credentials updated successfully" });
   } catch (error) {
     console.error("Error updating credentials:", error);
@@ -273,18 +263,16 @@ app.post("/register", (req, res) => {
   if (password.length < 8) {
     return res.json({ Error: "Паролата трябва да бъде поне 8 символа!" });
   }
-  // Check if username already exists
   const checkUsernameQuery = "SELECT * FROM users WHERE username = $1";
   const checkUsernameValues = [username];
   pool.query(checkUsernameQuery, checkUsernameValues, (err, result) => {
     if (err) {
-      return res.json({ Error: "Database error" });
+      return res.json({ Error: "Грешка с базата данни" });
     }
     if (result.rows.length > 0) {
       return res.json({ Error: "Потребителят вече съществува!" });
     }
 
-    // If username is valid and doesn't exist, proceed with registration
     bcrypt.hash(password.toString(), 10, (err, hash) => {
       if (err) return res.json({ Error: "Error hashing password" });
 
@@ -296,7 +284,6 @@ app.post("/register", (req, res) => {
 
         const userid = result.rows[0].userid;
 
-        // Insert default list for the user
         const insertListQuery =
           "INSERT INTO lists (userid, listname) VALUES ($1, $2) RETURNING listid";
         const insertListValues = [userid, "Обучение"];
@@ -486,34 +473,22 @@ app.delete("/tasks/:id", async (req, res) => {
 
 app.delete("/lists/:listid", async (req, res) => {
   const listId = req.params.listid;
-  const client = await pool.connect(); // Acquire a client from the pool
-
+  
   try {
-    await client.query("BEGIN"); // Start a transaction
-
-    // Delete tasks associated with the list
-    await client.query("DELETE FROM tasks WHERE listid = $1", [listId]);
-
-    // Delete the list
-    const result = await client.query("DELETE FROM lists WHERE listid = $1", [
-      listId,
-    ]);
-
-    await client.query("COMMIT"); // Commit the transaction
+    await pool.query("DELETE FROM tasks WHERE listid = $1", [listId]);
+    const result = await pool.query("DELETE FROM lists WHERE listid = $1", [listId]);
 
     if (result.rowCount === 0) {
-      res.status(404).json({ error: "List not found" });
-    } else {
-      res.json({ message: "List and associated tasks deleted successfully" });
+      return res.status(404).json({ error: "List not found" });
     }
+    
+    res.json({ message: "List and associated tasks deleted successfully" });
   } catch (error) {
-    await client.query("ROLLBACK"); // Rollback the transaction in case of error
     console.error("Error deleting list:", error);
     res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    client.release(); // Release the client back to the pool
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

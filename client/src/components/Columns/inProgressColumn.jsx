@@ -21,13 +21,13 @@ export const InProgressColumn = ({ selectedList, userId }) => {
   }, [selectedList, tasks]);
 
   const handleDragOver = (event) => {
-    event.preventDefault(); // Necessary to allow dropping
+    event.preventDefault();
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const column = "inprogress";
-    const taskId = event.dataTransfer.getData("text/plain"); // Get the dragged task ID
+    const taskId = event.dataTransfer.getData("text/plain"); 
     updateTaskStatus(taskId, column);
   };
 

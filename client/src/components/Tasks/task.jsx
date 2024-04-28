@@ -160,7 +160,6 @@ const Popup = ({
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:2608/tasks/${id}`);
-      onDelete(id);
     } catch (error) {
       console.error("Error deleting task:", error);
     }

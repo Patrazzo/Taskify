@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 export const TodoColumn = ({ selectedList, userId }) => {
   const [tasks, setTasks] = useState([]);
-  const [editingInProgress, setEditingInProgress] = useState(false); 
+  const [editingInProgress, setEditingInProgress] = useState(false);
 
   useEffect(() => {
     Cookies.set("selectedList", selectedList);
@@ -41,11 +41,6 @@ export const TodoColumn = ({ selectedList, userId }) => {
       await axios.put(`http://localhost:2608/tasks/${taskId}/status`, {
         status: column,
       });
-      setTasks(
-        tasks.map((task) =>
-          task.taskid === taskId ? { ...task, status: column } : task
-        )
-      );
     } catch (error) {
       console.error("Error updating task status:", error);
     }

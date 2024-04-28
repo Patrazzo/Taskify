@@ -35,7 +35,6 @@ export const Sidebar = ({
           newListName: newListName,
           user: user,
         });
-        fetchLists();
         setNewListName("");
         setShowError(false);
       } catch (error) {
@@ -44,17 +43,7 @@ export const Sidebar = ({
     }
   };
 
-  const handleProfileFormSubmit = (event) => {
-    event.preventDefault();
-    updateCredentials();
-    // Here you can handle the submission of username and password
-    console.log("Username:", username);
-    console.log("Password:", password);
-    console.log("user", user);
-    // Clear input fields
-    setUsername("");
-    setPassword("");
-  };
+  
 
   const updateCredentials = async () => {
     try {
@@ -63,11 +52,13 @@ export const Sidebar = ({
         {
           username: username,
           password: password,
-          user: user, // Assuming user is the identifier for the current user
+          user: user,
         }
       );
       console.log("Credentials updated:", response.data);
-      setShowError(false)
+      setShowError(false);
+      setUsername("");
+      setPassword("");
     } catch (error) {
       console.error("Error updating credentials:", error);
       if (error.response && error.response.data && error.response.data.error) {
@@ -77,7 +68,6 @@ export const Sidebar = ({
       }
     }
   };
-  
 
   const fetchLists = async () => {
     try {
@@ -208,7 +198,7 @@ export const Sidebar = ({
           </div>
           {isEditing ? (
             <div>
-              <div className="fixed bottom-5 left-80 w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <div className="fixed bottom-5 phone:bottom-20 left-80 phone:left-10 w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <div
                   className="w-full px-4 py-2 text-base text-center rounded-t-lg
                   text-taskify-textLightDarkColor bg-taskify-lightDarkElement 
@@ -217,8 +207,8 @@ export const Sidebar = ({
                 >
                   Промяна на данни
                 </div>
-                {/* Profile form */}
-                <form onSubmit={handleProfileFormSubmit}>
+
+                <form>
                   <input
                     type="text"
                     value={username}
@@ -234,10 +224,10 @@ export const Sidebar = ({
                     className="border-none w-full bg-taskify-lightElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor p-2"
                   />
                   <button
-                    type="submit"
+                    onClick={updateCredentials}
                     className="w-full p-2 font-medium text-center bg-taskify-lightDarkElement dark:bg-taskify-lightBlue hover:bg-[#20e3b2] dark:hover:bg-taskify-Green rounded-b-lg text-taskify-textLightDarkColor dark:text-taskify-lightBackground cursor-pointer"
                   >
-                    Submit
+                    ПОТВЪРДИ
                   </button>
                 </form>
               </div>
@@ -246,7 +236,7 @@ export const Sidebar = ({
           <div
             className={`fixed bottom-0 transition-all duration-300 ${
               open ? "left-0" : "-left-full"
-            } w-72 h-14 flex items-center justify-between p-10 dark:bg-taskify-lightGreenBackground`}
+            } w-72 h-14 flex items-center justify-between p-10 dark:bg-taskify-lightBlue`}
           >
             <p className="dark:text-taskify-lightBackground text-lg text-taskify-textLightDarkColor">
               {name}
@@ -259,7 +249,7 @@ export const Sidebar = ({
               stroke={
                 localStorage.getItem("theme") === "dark" ? "#f7f7f2" : "#1e6091"
               }
-              className="w-6 h-6 hover:rotate-45 transition-all duration-100 dark:bg-taskify-lightGreenBackground"
+              className="w-6 h-6 hover:rotate-45 transition-all duration-100 dark:bg-taskify-lightBlue"
               onClick={
                 isEditing ? () => setIsEditing(false) : () => setIsEditing(true)
               }
