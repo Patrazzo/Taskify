@@ -26,7 +26,7 @@ export const Sidebar = ({
 
   const handleCreateNewList = async (event) => {
     event.preventDefault();
-  
+
     if (newListName.trim() === "") {
       setShowError("Името трябва да съдържа поне 1 символ");
     } else {
@@ -44,7 +44,6 @@ export const Sidebar = ({
     }
   };
 
-
   const updateCredentials = async (event) => {
     event.preventDefault();
     try {
@@ -56,12 +55,10 @@ export const Sidebar = ({
           user: user,
         }
       );
-      console.log("Credentials updated:", response.data);
       setShowError(false);
       setUsername("");
       setPassword("");
     } catch (error) {
-      console.error("Error updating credentials:", error);
       if (error.response && error.response.data && error.response.data.error) {
         setShowError(error.response.data.error);
       } else {
@@ -69,7 +66,6 @@ export const Sidebar = ({
       }
     }
   };
-  
 
   const fetchLists = async () => {
     try {
@@ -142,6 +138,8 @@ export const Sidebar = ({
         }`}
         onClick={() => {
           setOpen(!open), setShowError(false), setIsEditing(false);
+          setUsername("");
+          setPassword("");
         }}
       />
       <div
@@ -253,7 +251,13 @@ export const Sidebar = ({
               }
               className="w-6 h-6 hover:rotate-45 transition-all duration-100 dark:bg-taskify-lightBlue"
               onClick={
-                isEditing ? () => setIsEditing(false) : () => setIsEditing(true)
+                isEditing
+                  ? () => {
+                      setIsEditing(false);
+                      setUsername("");
+                      setPassword("");
+                    }
+                  : () => setIsEditing(true)
               }
             >
               <path

@@ -10,7 +10,7 @@ export const Info = (props) => {
       className={`flex ${flexRowReverse} ${flexColReverse} phone:flex-col justify-between phone:pb-10 phone:items-center dark:bg-taskify-DarkBlue bg-taskify-lightBackground`}
     >
       <div className="w-2/4 phone:w-full flex taskify-White-text justify-center items-center">
-        <img src={props.imgSrc} alt="image" className="logo" />
+        <img src={props.imgSrc} alt="image" />
       </div>
       <div className="w-2/4 phone:w-full smallphone:w-full smallphone:text-xs  smallphone:px-1 smallphone:h-auto flex justify-center items-center flex-col p-5">
         <h1 className="text-4xl text-taskify-Green text-center mb-10 drop-shadow">
