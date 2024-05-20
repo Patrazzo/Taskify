@@ -52,19 +52,20 @@ export const InProgressColumn = ({ selectedList, userId }) => {
           description: updatedDescription,
         }),
       });
-      // Optionally, you can refresh the tasks after updating
-      // Fetch tasks again or update the existing task list
     } catch (error) {
       console.error("Error updating task:", error);
     }
   };
   return (
     <div
-      className="w-[300px] p-0 rounded-3xl m-8 dashboard:m-2 mt-0 overflow-y-hidden min-h-[500px] z-30 dark:bg-[#068D9D] bg-[#3AB6C8] select-none"
+      className="w-[300px] p-0 rounded-3xl m-8 dashboard:m-2 mt-0 overflow-y-hidden min-h-[500px] z-30 
+      dark:bg-[#068D9D] bg-[#3AB6C8] select-none"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="flex justify-center items-center bg-taskify-lightDarkElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightBackground h-[60px] text-xl">
+      <div className="flex justify-center items-center h-[60px] text-xl 
+      bg-taskify-lightDarkElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightBackground 
+      ">
         <h4>ЗАПОЧНАТИ</h4>
       </div>
       <div className="max-h-[440px] overflow-y-auto">
@@ -76,7 +77,7 @@ export const InProgressColumn = ({ selectedList, userId }) => {
               id={task.taskid}
               title={task.taskname}
               description={task.description}
-              onUpdate={handleTaskUpdate} // Pass the onUpdate function
+              onUpdate={handleTaskUpdate}
               editingInProgress={editingInProgress}
               setEditingInProgress={setEditingInProgress}
             />

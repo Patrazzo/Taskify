@@ -15,7 +15,8 @@ export const Footer = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full phone:gap-10 h-auto px-20 pt-5 pb-2 dark:bg-taskify-lightBlue bg-taskify-lightElement">
+    <div className="flex flex-col justify-center items-center w-full phone:gap-10 h-auto px-20 pt-5 pb-2 
+    dark:bg-taskify-lightBlue bg-taskify-lightElement">
       <div className="w-full pb-10 phone:pb-0 flex flex-row phone:flex-col gap-10 items-center justify-between">
         <div className="flex flex-row items-center justify-center drop-shadow">
           <img
@@ -29,7 +30,8 @@ export const Footer = () => {
           </h1>
           <button
             onClick={switchTheme}
-            className="w-10 h-10 m-3 drop-shadow rounded-2xl text-base bg-taskify-Green taskify-DarkBlue-text flex justify-center items-center"
+            className="w-10 h-10 m-3 drop-shadow rounded-2xl text-base flex justify-center items-center
+            bg-taskify-Green taskify-DarkBlue-text "
           >
             {theme === "dark" ? (
               <svg

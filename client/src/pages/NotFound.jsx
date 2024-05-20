@@ -24,7 +24,8 @@ const NotFoundPage = () => {
               Error 404
             </h3>
             <h1
-              className="text-4xl bg-gradient-to-r dark:from-taskify-lightElement from-taskify-lightBlue  inline-block text-transparent bg-clip-text mb-10 w-5/6
+              className="text-4xl bg-gradient-to-r dark:from-taskify-lightElement from-taskify-lightBlue  
+              inline-block text-transparent bg-clip-text mb-10 w-5/6
             "
             >
               Ммм...изглежда, че тази страница е в todo и все още не е готова!

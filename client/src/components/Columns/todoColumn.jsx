@@ -62,11 +62,13 @@ export const TodoColumn = ({ selectedList, userId }) => {
 
   return (
     <div
-      className="w-[300px] p-0 rounded-3xl min-h-[500px] m-8 dashboard:m-2 mt-0 overflow-y-hidden z-30 dark:bg-[#C1121F] bg-[#FF576F] select-none"
+      className="w-[300px] p-0 rounded-3xl min-h-[500px] m-8 dashboard:m-2 mt-0 overflow-y-hidden z-30 
+      dark:bg-[#C1121F] bg-[#FF576F] select-none"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="flex justify-center items-center bg-taskify-lightDarkElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightElement h-[60px] text-xl">
+      <div className="flex justify-center items-center h-[60px] text-xl
+      bg-taskify-lightDarkElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightElement ">
         <h4>ЗАДАЧИ</h4>
       </div>
       <div className="max-h-[440px] overflow-y-auto">

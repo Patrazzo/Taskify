@@ -49,7 +49,8 @@ const Form = ({ type }) => {
         } phone:flex-col-reverse`}
       >
         <div
-          className={`w-1/3 phone:w-full h-full phone:hidden bg-[#20e3b2] dark:bg-taskify-Green flex justify-center items-center flex-col  ${
+          className={`w-1/3 phone:w-full h-full phone:hidden 
+          bg-[#20e3b2] dark:bg-taskify-Green flex justify-center items-center flex-col  ${
             isLogin
               ? "rounded-tr-2xl rounded-br-3xl"
               : "rounded-tl-2xl rounded-bl-3xl"
@@ -58,7 +59,8 @@ const Form = ({ type }) => {
           {isLogin ? <img src="/assets/Login.png" alt="Logo" />: <img src="/assets/todolist.png" alt="Logo" />}
           
         </div>
-        <div className="w-2/3 phone:w-full h-full phone:h-screen phone:justify-start phone:pt-10 dark:bg-taskify-DarkBlue bg-taskify-lightBackground flex items-center justify-center flex-col">
+        <div className="w-2/3 phone:w-full h-full phone:h-screen phone:justify-start phone:pt-10 
+        dark:bg-taskify-DarkBlue bg-taskify-lightBackground flex items-center justify-center flex-col">
           <form
             className="flex flex-col justify-center items-center rounded-2xl w-7/12 h-3/5 smallphone:w-10/12 phone:m-20"
             onSubmit={isLogin ? handleLogin : handleRegister}
@@ -68,7 +70,8 @@ const Form = ({ type }) => {
             </h1>
             {errorMessage ? <p className="text-xs text-[#FF576F]">{errorMessage}</p> : null}
             <input
-              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 dark:text-taskify-lightElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue"
+              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 
+              dark:text-taskify-lightElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue"
               type="text"
               placeholder="Потребител"
               name="username"
@@ -77,7 +80,8 @@ const Form = ({ type }) => {
               }
             />
             <input
-              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 dark:text-taskify-lightElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue"
+              className="drop-shadow rounded-2xl m-2 smallphone:w-11/12 
+              dark:text-taskify-lightElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue"
               type="password"
               placeholder="Парола"
               name="password"
@@ -98,7 +102,9 @@ const Form = ({ type }) => {
             )}
             <button
               type="submit"
-              className="drop-shadow-md w-40 m-2 h-10 rounded-2xl text-base bg-gradient-to-r dark:from-[#8e44ad] dark:via-[#D76D77] dark:to-[#c0392b] from-[#f2709c]  to-[#ff9472] text-taskify-lightElement dark:text-taskify-lightBlue"
+              className="drop-shadow-md w-40 m-2 h-10 rounded-2xl text-base 
+              bg-gradient-to-r dark:from-[#8e44ad] dark:via-[#D76D77] dark:to-[#c0392b] from-[#f2709c] to-[#ff9472] 
+              text-taskify-lightElement dark:text-taskify-lightBlue"
             >
               {isLogin ? "ВЛЕЗ" : "РЕГИСТРАЦИЯ"}
             </button>

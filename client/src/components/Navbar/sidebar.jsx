@@ -133,7 +133,8 @@ export const Sidebar = ({
       </svg>
 
       <div
-        className={`fixed top-0 left-0 w-full h-full dark:bg-taskify-lightBlue bg-taskify-lightElement z-20 transition-opacity duration-300 ${
+        className={`fixed top-0 left-0 w-full h-full 
+        dark:bg-taskify-lightBlue bg-taskify-lightElement z-20 transition-opacity duration-300 ${
           open ? "opacity-50" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => {
@@ -166,7 +167,8 @@ export const Sidebar = ({
                 value={newListName}
                 onChange={handleInputChange}
                 placeholder="Въведи име на лист"
-                className="border-none bg-taskify-lightDarkElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor rounded-md p-2"
+                className="border-none rounded-md p-2
+                bg-taskify-lightDarkElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor "
               />
               {showError ? (
                 <p className="text-xs text-center text-[#FF576F]">
@@ -175,7 +177,10 @@ export const Sidebar = ({
               ) : null}
               <button
                 onClick={handleCreateNewList}
-                className="dark:bg-taskify-DarkBlue hover:text-taskify-lightBackground dark:hover:bg-taskify-Green hover:bg-taskify-Green dark:hover:text-taskify-lightBlue bg-taskify-lightDarkElement dark:text-taskify-lightDarkElement text-taskify-textLightDarkColor px-4 mt-2 py-2 rounded-lg w-[200px]"
+                className="dark:bg-taskify-DarkBlue hover:text-taskify-lightBackground 
+                dark:hover:bg-taskify-Green hover:bg-taskify-Green dark:hover:text-taskify-lightBlue 
+                bg-taskify-lightDarkElement dark:text-taskify-lightDarkElement text-taskify-textLightDarkColor 
+                px-4 mt-2 py-2 rounded-lg w-[200px]"
               >
                 СЪЗДАЙ
               </button>
@@ -192,13 +197,14 @@ export const Sidebar = ({
                 editingInProgress={editingInProgress}
                 setEditingInProgress={setEditingInProgress}
                 setShowError={setShowError}
-                isSelected={selectedList === list.listid} // Check if the list is selected
+                isSelected={selectedList === list.listid}
               />
             ))}
           </div>
           {isEditing ? (
             <div>
-              <div className="fixed bottom-5 phone:bottom-20 left-80 phone:left-10 w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <div className="fixed bottom-5 phone:bottom-20 left-80 phone:left-10 w-48 text-sm font-medium 
+              text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <div
                   className="w-full px-4 py-2 text-base text-center rounded-t-lg
                   text-taskify-textLightDarkColor bg-taskify-lightDarkElement 
@@ -214,18 +220,22 @@ export const Sidebar = ({
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Ново име"
-                    className="border-none w-full bg-taskify-lightElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor p-2"
+                    className="border-none w-full bg-taskify-lightElement dark:bg-taskify-DarkBlue 
+                    dark:text-taskify-lightBackground text-taskify-textLightDarkColor p-2"
                   />
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Нова парола"
-                    className="border-none w-full bg-taskify-lightElement dark:bg-taskify-DarkBlue dark:text-taskify-lightBackground text-taskify-textLightDarkColor p-2"
+                    className="border-none w-full bg-taskify-lightElement dark:bg-taskify-DarkBlue 
+                    dark:text-taskify-lightBackground text-taskify-textLightDarkColor p-2"
                   />
                   <button
                     onClick={updateCredentials}
-                    className="w-full p-2 font-medium text-center bg-taskify-lightDarkElement dark:bg-taskify-lightBlue hover:bg-taskify-Green dark:hover:bg-taskify-Green rounded-b-lg text-taskify-textLightDarkColor hover:text-taskify-lightBackground dark:text-taskify-lightBackground dark:hover:text-taskify-lightBlue cursor-pointer"
+                    className="w-full p-2 font-medium text-center bg-taskify-lightDarkElement dark:bg-taskify-lightBlue 
+                    hover:bg-taskify-Green dark:hover:bg-taskify-Green rounded-b-lg text-taskify-textLightDarkColor cursor-pointer
+                    hover:text-taskify-lightBackground dark:text-taskify-lightBackground dark:hover:text-taskify-lightBlue"
                   >
                     ПОТВЪРДИ
                   </button>

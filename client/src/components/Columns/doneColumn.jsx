@@ -22,13 +22,13 @@ export const DoneColumn = ({ selectedList, userId }) => {
   }, [selectedList, tasks]);
 
   const handleDragOver = (event) => {
-    event.preventDefault(); // Necessary to allow dropping
+    event.preventDefault(); 
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const column = "done";
-    const taskId = event.dataTransfer.getData("text/plain"); // Get the dragged task ID
+    const taskId = event.dataTransfer.getData("text/plain"); 
     updateTaskStatus(taskId, column);
   };
 
@@ -59,19 +59,20 @@ export const DoneColumn = ({ selectedList, userId }) => {
           description: updatedDescription,
         }),
       });
-      // Optionally, you can refresh the tasks after updating
-      // Fetch tasks again or update the existing task list
     } catch (error) {
       console.error("Error updating task:", error);
     }
   };
   return (
     <div
-      className="w-[300px] p-0 rounded-3xl m-8 dashboard:m-2 mt-0 overflow-y-hidden min-h-[500px] z-30 dark:bg-[#3BC14A] bg-[#6DD871] select-none"
+      className="w-[300px] p-0 rounded-3xl m-8 dashboard:m-2 mt-0 overflow-y-hidden min-h-[500px] z-30 
+      dark:bg-[#3BC14A] bg-[#6DD871] select-none"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="flex justify-center items-center bg-taskify-lightDarkElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightBackground h-[60px] text-xl">
+      <div className="flex justify-center items-center h-[60px] text-xl 
+      bg-taskify-lightDarkElement text-taskify-textLightDarkColor dark:bg-taskify-lightBlue dark:text-taskify-lightBackground 
+      ">
         <h4>ЗАВЪРШЕНИ</h4>
       </div>
       <div className="max-h-[440px] overflow-y-auto">
@@ -83,7 +84,7 @@ export const DoneColumn = ({ selectedList, userId }) => {
               id={task.taskid}
               title={task.taskname}
               description={task.description}
-              onUpdate={handleTaskUpdate} // Pass the onUpdate function
+              onUpdate={handleTaskUpdate} 
               editingInProgress={editingInProgress}
               setEditingInProgress={setEditingInProgress}
             />

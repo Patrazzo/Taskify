@@ -11,11 +11,9 @@ const Header = () => {
   const [lastVisitedPage, setLastVisitedPage] = useState("/"); // Initialize with default root path
   const [role, setRole] = useState("");
   const handleLogout = () => {
-    // Delete cookies
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie =
       "selectedList=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
     {
       auth ? (window.location.href = lastVisitedPage) : null;
     }
@@ -47,12 +45,12 @@ const Header = () => {
   }, [auth]);
   
   useEffect(() => {
-    // Save the current page's URL to state whenever the path changes
     setLastVisitedPage(window.location.pathname);
   }, [window.location.pathname]);
 
   return (
-    <div className="drop-shadow m-0 w-full h-16 flex flex-row justify-between items-center p-8 smallphone:p-2 bg-taskify-lightElement dark:bg-taskify-lightBlue">
+    <div className="drop-shadow m-0 w-full h-16 flex flex-row justify-between items-center p-8 smallphone:p-2 
+    bg-taskify-lightElement dark:bg-taskify-lightBlue">
       <Link to="/home" className="flex flex-row items-center gap-2">
         <img src="/assets/logo.svg" alt="Logo" height={30} width={30} />
         <h1 className="text-2xl dark:text-white text-taskify-lightBlue">
