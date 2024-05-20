@@ -58,6 +58,7 @@ export const Sidebar = ({
       setShowError(false);
       setUsername("");
       setPassword("");
+      setName(username);  // Update the name state with the new username
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setShowError(error.response.data.error);
