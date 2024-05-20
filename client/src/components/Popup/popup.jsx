@@ -19,7 +19,7 @@ function Popup({ trigger, setTrigger, selectedList, showError, setShowError }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedList === "default") {
-      setShowError(true); // Show error popup
+      setShowError(true);
       setTrigger(false);
       setName("");
       setDescription("");

@@ -99,11 +99,11 @@ export const TaskifyAdminPanel = () => {
 
   const handleRoleChange = async (userId, newRole) => {
     try {
-      // Send a request to update the user's role
+      
       await axios.put(`http://localhost:2608/updateUserRole/${userId}`, {
         role: newRole,
       });
-      // Update the user's role in the state
+
       setUsers(
         users.map((user) =>
           user.userid === userId ? { ...user, role: newRole } : user

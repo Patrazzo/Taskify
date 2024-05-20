@@ -225,7 +225,7 @@ export const Sidebar = ({
                   />
                   <button
                     onClick={updateCredentials}
-                    className="w-full p-2 font-medium text-center bg-taskify-lightDarkElement dark:bg-taskify-lightBlue hover:bg-[#20e3b2] dark:hover:bg-taskify-Green rounded-b-lg text-taskify-textLightDarkColor dark:text-taskify-lightBackground cursor-pointer"
+                    className="w-full p-2 font-medium text-center bg-taskify-lightDarkElement dark:bg-taskify-lightBlue hover:bg-taskify-Green dark:hover:bg-taskify-Green rounded-b-lg text-taskify-textLightDarkColor hover:text-taskify-lightBackground dark:text-taskify-lightBackground dark:hover:text-taskify-lightBlue cursor-pointer"
                   >
                     ПОТВЪРДИ
                   </button>

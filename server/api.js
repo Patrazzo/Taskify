@@ -65,7 +65,7 @@ app.post("/login", (req, res) => {
             expiresIn: "7d",
           });
           res.cookie("token", token);
-          console.log(role);
+          
           return res.json({ Status: "Success", role });
         } else {
           return res.json({ Error: "Грешна парола!" });
@@ -84,7 +84,7 @@ app.put("/updateUserRole/:userId", async (req, res) => {
       role,
       userId,
     ]);
-    res.sendStatus(204); // No content
+    res.sendStatus(204); 
   } catch (error) {
     console.error("Error updating user role:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -389,7 +389,7 @@ app.get("/getTask/:listid", async (req, res) => {
 
     return res.status(200).json(rows);
   } catch (err) {
-    console.error("Error retrieving Tasks:", err);
+    
     return res.status(500).json({ Error: "Internal Server Error" });
   }
 });

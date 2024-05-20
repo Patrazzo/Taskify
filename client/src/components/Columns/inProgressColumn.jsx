@@ -1,4 +1,3 @@
-// InProgressColumn.jsx
 import React, { useState, useEffect } from "react";
 import { Task } from "../Tasks/task";
 import axios from "axios";
