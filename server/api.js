@@ -180,7 +180,7 @@ app.post("/updateCredentials", async (req, res) => {
     res.status(200).json({ message: "Credentials updated successfully" });
   } catch (error) {
     console.error("Error updating credentials:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Името е заето" });
   }
 });
 
